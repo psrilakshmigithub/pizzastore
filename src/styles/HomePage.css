@@ -1,0 +1,26 @@
+/* homepage.css */
+.min-h-screen {
+    @apply bg-gray-100;
+  }
+  .header {
+    @apply bg-red-600 text-white p-4;
+  }
+  .header-title {
+    @apply text-3xl font-bold text-center;
+  }
+  .main {
+    @apply p-6;
+  }
+  .main-title {
+    @apply text-2xl font-semibold mb-4;
+  }
+  .grid-layout {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+  }
+  .category-card {
+    @apply bg-white shadow-lg rounded-lg p-4 text-center hover:shadow-xl transform hover:scale-105 transition;
+  }
+  .category-card-title {
+    @apply text-lg font-medium text-gray-700;
+  }
+  

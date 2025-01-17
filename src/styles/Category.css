@@ -1,0 +1,42 @@
+.min-h-screen {
+    @apply bg-gray-100;
+  }
+  .header {
+    @apply bg-red-600 text-white p-4;
+  }
+  .header-title {
+    @apply text-3xl font-bold text-center;
+  }
+  .main {
+    @apply p-6;
+  }
+  .main-title {
+    @apply text-2xl font-semibold mb-4;
+  }
+  .item-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+  }
+  .item-card {
+    @apply bg-white shadow-lg rounded-lg p-4 text-center hover:shadow-xl transform hover:scale-105 transition;
+  }
+  .item-card-title {
+    @apply text-lg font-medium text-gray-700;
+  }
+  .item-card-price {
+    @apply text-sm text-gray-500;
+  }
+  .item-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .category-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }

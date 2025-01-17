@@ -1,0 +1,49 @@
+.menu-page {
+    padding: 20px;
+  }
+  
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .menu-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .menu-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .menu-card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+  
+  .menu-card p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .order-now-button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  
+  .order-now-button:hover {
+    background: #0056b3;
+  }
+  
