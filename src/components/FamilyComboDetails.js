@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
 
 const FamilyComboDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const [combo, setCombo] = useState(null);
+  const navigate = useNavigate();
   const [toppings, setToppings] = useState([]);
   const [selectedToppings, setSelectedToppings] = useState([]); // Array of arrays for each pizza
   const [selectedSize, setSelectedSize] = useState('');
@@ -13,7 +14,7 @@ const FamilyComboDetails = () => {
   const [selectedDrinks, setSelectedDrinks] = useState([]); // Updated to allow multiple drinks
   const [selectedSide, setSelectedSide] = useState('');
   const [quantity, setQuantity] = useState(1);
-
+  const userId = JSON.parse(localStorage.getItem('user'))?._id; 
   useEffect(() => {
     const fetchComboDetails = async () => {
       try {
@@ -27,6 +28,10 @@ const FamilyComboDetails = () => {
         setSelectedSize(response.data.details.sizes[0]);
         setSelectedWingsFlavor(response.data.details.wingsFlavors[0]);
         setSelectedSide(response.data.details.sides[0]);
+        if (response.data.details.drinks && response.data.details.drinks.length > 0) {
+          setSelectedDrinks([]);
+
+        }
       } catch (error) {
         console.error('Error fetching combo details:', error);
       }
@@ -103,8 +108,14 @@ const FamilyComboDetails = () => {
  
 
   const handleAddToCart = async () => {
+    if (!userId) {
+      alert('You need to log in to add items to your cart.');
+      navigate('/login');
+      return;
+    }
     try {
       const order = {
+        userId, 
         productId: combo._id,
         size: selectedSize,
         wingsFlavor: selectedWingsFlavor,

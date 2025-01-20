@@ -45,6 +45,7 @@ const WingsDetails = () => {
         productId: wing._id,
         size: selectedSize,
         flavor: selectedFlavor,
+        wingsFlavor:selectedFlavor,
         quantity,
         totalPrice: calculateTotalPrice(),
       };

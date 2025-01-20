@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
 
 const TwoForOneDetails = () => {
@@ -10,7 +10,8 @@ const TwoForOneDetails = () => {
   const [selectedToppings, setSelectedToppings] = useState([[], []]); // Toppings for each pizza
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
-
+  const navigate = useNavigate();
+  const userId = JSON.parse(localStorage.getItem('user'))?._id;
   useEffect(() => {
     const fetchDealDetails = async () => {
       try {
@@ -63,8 +64,14 @@ const TwoForOneDetails = () => {
   };
 
   const handleAddToCart = async () => {
+    if (!userId) {
+      alert('You need to log in to add items to your cart.');
+      navigate('/login');
+      return;
+    }
     try {
       const order = {
+        userId, 
         productId: deal._id,
         size: selectedSize,
         toppings: selectedToppings,

@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
 
 const PanzerotteDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const [panzerotte, setPanzerotte] = useState(null);
+  const navigate = useNavigate();
   const [toppings, setToppings] = useState([]);
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [selectedFlavor, setSelectedFlavor] = useState('');
   const [quantity, setQuantity] = useState(1);
-
+  const userId = JSON.parse(localStorage.getItem('user'))?._id;
   useEffect(() => {
     const fetchPanzerotteDetails = async () => {
       try {
@@ -54,8 +55,14 @@ const PanzerotteDetails = () => {
   };
 
   const handleAddToCart = async () => {
+    if (!userId) {
+      alert('You need to log in to add items to your cart.');
+      navigate('/login');
+      return;
+    }
     try {
       const order = {
+        userId, 
         productId: panzerotte._id,
         flavor: selectedFlavor,
         toppings: selectedToppings,

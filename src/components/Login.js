@@ -21,7 +21,7 @@ const Login = () => {
         name: decodedToken.name,
       });
       console.log(response.data);
-      if (response.data.isNewUser) {
+      if (response.data.user.contacts.length==0) {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         navigate('/managecontacts');
         

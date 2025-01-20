@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
+import '../styles/Category.css';
 
 const Beverages = () => {
   const [beverages, setBeverages] = useState([]);
+  const navigate = useNavigate();
   const [selectedDrinks, setSelectedDrinks] = useState({}); // Store selected drink quantities as an object
-
+  const userId = JSON.parse(localStorage.getItem('user'))?._id;
   useEffect(() => {
     const fetchBeverages = async () => {
       try {
@@ -28,17 +31,23 @@ const Beverages = () => {
 
   
   const handleAddToCart = async () => {
-  try {
-    const drinks = Object.entries(selectedDrinks).map(([name, quantity]) => ({
-      name,
-      quantity,
-    }));
-
-    const order = {
+  
+    if (!userId) {
+      alert('You need to log in to add items to your cart.');
+      navigate('/login');
+      return;
+    }
+    try {
+      const order = {
+        userId, 
       productId: null, // Beverages may not have a specific productId
       drinks,
       totalPrice: calculateTotalPrice(drinks),
     };
+    const drinks = Object.entries(selectedDrinks).map(([name, quantity]) => ({
+      name,
+      quantity,
+    }));
 
     console.log('Order Payload:', order); // Debugging
     await axios.post('http://localhost:5000/api/orders', order);
@@ -60,10 +69,10 @@ const Beverages = () => {
   return (
     <div className="details-container">
       <h1 className="details-title">Beverages</h1>
-      <div className="beverages-grid">
+      <div className="grid-layout">
         {beverages.map((bev) => (
-          <div key={bev._id} className="beverage-card">
-            <img src={`http://localhost:5000${bev.image}`} alt={bev.name} className="beverage-image" />
+          <div key={bev._id} className="item-card">
+            <img src={`http://localhost:5000${bev.image}`} alt={bev.name} className="category-card-image" />
             <h3 className="beverage-title">{bev.name}</h3>
             <p className="beverage-price">${bev.price.toFixed(2)}</p>
             <div className="beverage-quantity">

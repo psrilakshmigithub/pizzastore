@@ -47,7 +47,7 @@ const HomePage = () => {
                     ? `/category/beverages`
                     : `/${item.category.toLowerCase()}/${item._id}`
                 }
-                className="category-card"
+                
               >
                 <img
                   src={`http://localhost:5000${item.image}`}
