@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import '../styles/Layout.css';
+import '../styles/main.css'
 
 const Layout = () => {
   const [user, setUser] = useState(null);
@@ -36,7 +37,7 @@ const Layout = () => {
   return (
     <div className="layout">
       <header className="navbar">
-        <div className="logo">Jumbo 3 for 1 Pizza and Wings</div>
+        <div className="logo"><a alt="Jumbo 3 for 1 Pizza and Wings"><img src="..src/images/pizza-banner.jpg"></img></a></div>
         <nav className="nav-links">
           <ul>
             <li>

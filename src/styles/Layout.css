@@ -104,6 +104,10 @@
 .main-banner h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 24px;
+  padding: 8px 16px;
 }
 
 .main-banner p {
