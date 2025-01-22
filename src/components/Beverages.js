@@ -30,16 +30,9 @@ const Beverages = () => {
   };
 
   
-  const handleAddToCart = async () => {
-  
-    if (!userId) {
-      alert('You need to log in to add items to your cart.');
-      navigate('/login');
-      return;
-    }
+  const handleAddToCart = async () => {    
     try {
-      const order = {
-        userId, 
+      const order = {       
       productId: null, // Beverages may not have a specific productId
       drinks,
       totalPrice: calculateTotalPrice(drinks),
@@ -48,9 +41,15 @@ const Beverages = () => {
       name,
       quantity,
     }));
-
+    if (!userId) {
+      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      localCart.push(order);
+      localStorage.setItem('cart', JSON.stringify(localCart));
+      alert('Item added to cart.');
+      return;   
+    }
     console.log('Order Payload:', order); // Debugging
-    await axios.post('http://localhost:5000/api/orders', order);
+    await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
     alert('Beverages added to cart!');
   } catch (error) {
     console.error('Error adding beverages to cart:', error);

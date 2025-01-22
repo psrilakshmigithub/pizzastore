@@ -55,22 +55,23 @@ const PanzerotteDetails = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!userId) {
-      alert('You need to log in to add items to your cart.');
-      navigate('/login');
-      return;
-    }
+   
     try {
-      const order = {
-        userId, 
+      const order = {        
         productId: panzerotte._id,
         flavor: selectedFlavor,
         toppings: selectedToppings,
         quantity,
         totalPrice: calculateTotalPrice(),
       };
-
-      await axios.post('http://localhost:5000/api/orders', order);
+      if (!userId) {
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+          localCart.push(order);
+          localStorage.setItem('cart', JSON.stringify(localCart));
+          alert('Item added to cart.');
+          return;   
+      }
+      await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
       alert('Panzerotte added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);

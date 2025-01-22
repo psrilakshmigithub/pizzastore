@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/ContactManagement.css';
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
@@ -6,6 +7,8 @@ import { LoadScript, Autocomplete } from '@react-google-maps/api';
 const libraries = ['places']; // Required for Google Places Autocomplete
 
 const ManageContacts = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [contacts, setContacts] = useState([]);
   const [newContact, setNewContact] = useState({ phone: '', address: '', isDefault: true });
   const [isAdding, setIsAdding] = useState(false); // Manage visibility of the add contact form
@@ -43,6 +46,10 @@ const ManageContacts = () => {
       setContacts(response.data);
       setNewContact({ phone: '', address: '', isDefault: false });
       setIsAdding(false); // Hide form after adding contact
+      const fromCheckout = location.state?.fromCheckout;
+      if (fromCheckout) {
+        navigate('/checkout');
+      } 
     } catch (error) {
       console.error('Error adding contact:', error);
       alert('Failed to add contact.');
@@ -66,6 +73,10 @@ const ManageContacts = () => {
       );
       setContacts(response.data);
       setEditingContact(null); // Exit editing mode
+      const fromCheckout = location.state?.fromCheckout;
+      if (fromCheckout) {
+        navigate('/checkout');
+      } 
     } catch (error) {
       console.error('Error updating contact:', error);
       alert('Failed to update contact.');

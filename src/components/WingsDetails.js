@@ -33,15 +33,12 @@ const WingsDetails = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!userId) {
-      alert('You need to log in to add items to your cart.');
-      navigate('/login');
-      return;
-    }
+   
+   
 
     try {
-      const order = {
-        userId, // Add the user ID to the payload
+
+      const order = {      
         productId: wing._id,
         size: selectedSize,
         flavor: selectedFlavor,
@@ -50,9 +47,17 @@ const WingsDetails = () => {
         totalPrice: calculateTotalPrice(),
       };
 
+      if (!userId) {     
+        // Save to local storage if the user is not logged in
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        localCart.push(order);
+        localStorage.setItem('cart', JSON.stringify(localCart));
+        alert('Item added to cart.');
+        return;
+      }
       console.log('Order payload:', order);
 
-      await axios.post('http://localhost:5000/api/orders', order);
+      await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
       alert('Wing order added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);

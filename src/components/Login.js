@@ -11,6 +11,26 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const mergeCart = async () => {
+    const userId = JSON.parse(localStorage.getItem('user'))?._id;
+    const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+    if (userId && localCart.length > 0) {
+      try {
+        const response = await axios.post('http://localhost:5000/api/orders/merge-cart', {
+          userId,
+          localCart,
+        });
+  
+        console.log('Cart merged successfully:', response.data);
+        // Clear local storage cart after merge
+        localStorage.removeItem('cart');
+      } catch (error) {
+        console.error('Error merging cart:', error);
+      }
+    }
+  };
+
   const handleGoogleSuccess = async (credentialResponse) => {
     
     const decodedToken = jwtDecode(credentialResponse.credential);
@@ -29,6 +49,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         navigate('/'); // Redirect to homepage after login
       }
+      mergeCart();
     } catch (error) {
       console.error('Error with Google login:', error.message);
       alert('Google login failed.');
@@ -56,6 +77,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(fbResponse.data.user));
         navigate('/'); // Redirect to homepage after login
       }
+      mergeCart();
     } catch (error) {
       console.error('Error with Facebook login:', error.message);
       alert('Facebook login failed.');
@@ -67,6 +89,7 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      mergeCart();
       navigate('/'); // Redirect to homepage after login
     } catch (error) {
       console.error('Error with email/password login:', error.message);

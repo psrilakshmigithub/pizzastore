@@ -15,7 +15,7 @@ const PaymentPage = ({ totalAmount, userId }) => {
 
     try {
       // Create Payment Intent
-      const { data } = await axios.post('http://localhost:5000/api/orders/create-payment-intent', {
+      const { data } = await axios.post('http://localhost:5000/api/payment/create-payment-intent', {
         amount: totalAmount,
         userId,
       });

@@ -10,7 +10,7 @@ import ThreeForOneDetails from './components/ThreeForOneDetails';
 import TwoForOneDetails from './components/TwoForOneDetails';
 import PanzerotteDetails from './components/PanzerotteDetails';
 import BeveragesDetails from './components/Beverages';
-import Cart from './pages/CartPage';
+import Cart from './components/Cart';
 import Checkout from './pages/CheckoutPage';
 import Payment from './pages/PaymentPage';
 import ManageContacts from './components/ManageContacts';
@@ -20,7 +20,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentPage from './pages/PaymentPage';
-// const stripePromise = loadStripe('your_stripe_publishable_key');
+const stripePromise = loadStripe('pk_test_51QjvRCBpoKRfd7wJg46FVlz6xnmYIiy5Co4IAaIOummGpsWFqNkDo0fyo9zriDBl1aETR0sV4LBUCPiOMyZqVlF300Dg0jS3oe');
 
 const App = () => {
   return (
@@ -40,14 +40,14 @@ const App = () => {
           <Route path="category/beverages" element={<BeveragesDetails />} />
           <Route path="/cart" element={<Cart />} />
            <Route path="/checkout" element={<Checkout />} />
-           {/* <Route
+           <Route
               path="/payment"
               element={
                 <Elements stripe={stripePromise}>
                   <PaymentPage />
                 </Elements>
               }
-            /> */}
+            />
            <Route path="/login" element={<Login />} /> {/* Login Route */}
            <Route path="/register" element={<Register />} />
            <Route path="/managecontacts" element={<ManageContacts />} />
