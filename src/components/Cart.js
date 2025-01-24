@@ -11,29 +11,43 @@ const Cart = () => {
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
   useEffect(() => {
-    (async () => {
+    const fetchCartItems = async () => {
+      console.log("userId",userId);
       if (!userId) {
+        console.log("not userId");
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
         const populatedCart = await fetchProductDetails(localCart);
         setCartItems(
-          populatedCart.map((item) => ({
+          Array.isArray(populatedCart) ? populatedCart.map((item) => ({
             ...item,
             totalPrice: (item.productId.price || 0) * item.quantity, // Ensure totalPrice exists
-          }))
+          })) : []
         );
       } else {
         try {
-          const response = await axios.get(`http://localhost:5000/api/orders/cart/${userId}`);
-          setCartItems(response.data || []); // Ensure an array is set
+          console.log("else userId");
+          const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+          console.log("localCart.length",localCart.length);
+          if (localCart.length > 0) {
+            await mergeCart(localCart);
+            localStorage.removeItem('cart'); // Clear local storage cart after merge
+          }
+          const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+          console.log("response user id",response.data);
+          setCartItems(Array.isArray(response.data.items) ? response.data.items : []); // Ensure an array is set
+       
+          console.log("response.data.items",cartItems);
         } catch (error) {
           console.error('Error fetching cart:', error.message);
         }
       }
-    })();
+    };
+
+    fetchCartItems();
   }, [userId]);
 
   const calculateSubtotal = () =>
-    cartItems.reduce((total, item) => total + (item.totalPrice || 0), 0);
+    cartItems.reduce((total, item) => total + (item.productId.price * item.quantity || 0), 0);
 
   const calculateTax = (subtotal) => subtotal * taxRate;
 
@@ -43,6 +57,7 @@ const Cart = () => {
     const tip = (subtotal * tipPercentage) / 100;
     return (subtotal + tax + tip).toFixed(2);
   };
+
 
   const fetchProductDetails = async (cart) => {
     const updatedCart = await Promise.all(
@@ -72,26 +87,21 @@ const Cart = () => {
     return filteredCart;
   };
 
-  const handleQuantityChange = async (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
-
+  const handleQuantityChange = async (itemId, quantity) => {
     try {
       if (userId) {
-        const response = await axios.put(`http://localhost:5000/api/orders/cart/${itemId}`, {
-          userId,
-          quantity: newQuantity,
-        });
-        setCartItems(response.data || []); // Update the cart with the new data
+        console.log("user with qunatity chnage");
+        const response = await axios.put(`http://localhost:5000/api/cart/${userId}/${itemId}`, { quantity });
+        console.log("response.data.items",response.data);
+        setCartItems(Array.isArray(response.data) ? response.data : []);
       } else {
+        
         const updatedCart = cartItems.map((item) =>
-          item.productId._id === itemId
-            ? {
-                ...item,
-                quantity: newQuantity,
-                totalPrice: newQuantity * (item.productId.price || 0), // Recalculate totalPrice
-              }
-            : item
+          item._id === itemId ? { ...item, quantity } : item
         );
+        
+        console.log("itemId",itemId);
+        console.log("updatedCart",updatedCart);
         setCartItems(updatedCart);
         localStorage.setItem(
           'cart',
@@ -102,6 +112,7 @@ const Cart = () => {
             }))
           )
         );
+        
       }
     } catch (error) {
       console.error('Error updating quantity:', error.message);
@@ -111,12 +122,12 @@ const Cart = () => {
   const handleDeleteItem = async (itemId) => {
     try {
       if (userId) {
-        const response = await axios.delete(`http://localhost:5000/api/orders/cart/${itemId}`, {
-          data: { userId },
-        });
-        setCartItems(response.data || []);
+        const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${itemId}`);
+        console.log("response.data.items",response.data);
+        setCartItems(Array.isArray(response.data) ? response.data : []);
+    
       } else {
-        const updatedCart = cartItems.filter((item) => item.productId._id !== itemId);
+        const updatedCart = cartItems.filter((item) => item._id !== itemId);
         setCartItems(updatedCart);
         localStorage.setItem(
           'cart',
@@ -133,11 +144,46 @@ const Cart = () => {
     }
   };
 
-  const handleCheckout = () => {
-    if (!userId) {
-      navigate('/login');
-    } else {
-      navigate('/checkout');
+  const mergeCart = async () => {
+    const userId = JSON.parse(localStorage.getItem('user'))?._id;
+    const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+    if (userId && localCart.length > 0) {
+      try {
+        const response = await axios.post('http://localhost:5000/api/cart/merge-cart', {
+          userId,
+          localCart,
+        });
+  
+        console.log('Cart merged successfully:', response.data);
+        // Clear local storage cart after merge
+        localStorage.removeItem('cart');
+      } catch (error) {
+        console.error('Error merging cart:', error);
+      }
+    }
+  };
+  const handleCheckout = async () => {
+    try {
+        if (!userId) {
+              navigate('/login', { state: { from: '/cart' } });
+      } else {     
+       
+        const newTotalPrice = calculateTotal();
+        updateTotalPriceInCart(newTotalPrice);
+        navigate('/checkout');
+      }
+    } catch (error) {
+      console.error('Error updating total price in cart:', error.message);
+    }
+  };
+  
+  const updateTotalPriceInCart = async (newTotalPrice) => {
+    try {
+      console.log("updateTotalPriceInCart",updateTotalPriceInCart);
+      await axios.get(`http://localhost:5000/api/cart/${userId}/updateTotalPrice/${newTotalPrice}`);
+    } catch (error) {
+      console.error('Error updating total price in cart:', error.message);
     }
   };
 
@@ -149,7 +195,7 @@ const Cart = () => {
       ) : (
         <>
           {cartItems.map((item) => (
-            <div key={item.productId._id} className="cart-item">
+            <div key={item._id} className="cart-item">
               <img
                 src={`http://localhost:5000${item.productId.image}`}
                 alt={item.productId.name}
@@ -165,7 +211,7 @@ const Cart = () => {
                     min="1"
                     value={item.quantity}
                     onChange={(e) =>
-                      handleQuantityChange(item.productId._id, parseInt(e.target.value, 10))
+                      handleQuantityChange(item._id, parseInt(e.target.value, 10))
                     }
                   />
                 </div>
@@ -173,7 +219,7 @@ const Cart = () => {
               </div>
               <button
                 className="delete-btn"
-                onClick={() => handleDeleteItem(item.productId._id)}
+                onClick={() => handleDeleteItem(item._id)}
               >
                 Remove
               </button>
