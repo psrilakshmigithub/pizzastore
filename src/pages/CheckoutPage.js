@@ -8,6 +8,8 @@ const CheckoutPage = () => {
   const [contactInfo, setContactInfo] = useState({ phone: '', address: '' });
   const [scheduledTime, setScheduledTime] = useState('');
   const [instructions, setInstructions] = useState('');
+  
+ 
   const navigate = useNavigate();
   const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
@@ -42,7 +44,7 @@ const CheckoutPage = () => {
         instructions,
       };
 
-      const response = await axios.post('http://localhost:5000/api/orders/confirm', payload);
+      const response = await axios.post('http://localhost:5000/api/cart/confirm', payload);
       alert('Order confirmed successfully!');
       navigate('/Payment');
     } catch (error) {

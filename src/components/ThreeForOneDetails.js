@@ -67,7 +67,7 @@ const ThreeForOneDetails = () => {
    
     try {
       const order = {
-          
+        userId: userId || null,
         productId: deal._id,
         size: selectedSize,
         toppings: selectedToppings,
@@ -81,7 +81,7 @@ const ThreeForOneDetails = () => {
         alert('Item added to cart.');
         return;   
       }
-      await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
+      await axios.post('http://localhost:5000/api/cart',  { userId, ...order });
       alert('Two-for-One Deal added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);

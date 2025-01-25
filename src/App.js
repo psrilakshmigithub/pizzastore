@@ -20,13 +20,16 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentPage from './pages/PaymentPage';
+import Myorders from './components/MyOrders';
 const stripePromise = loadStripe('pk_test_51QjvRCBpoKRfd7wJg46FVlz6xnmYIiy5Co4IAaIOummGpsWFqNkDo0fyo9zriDBl1aETR0sV4LBUCPiOMyZqVlF300Dg0jS3oe');
 
 const App = () => {
   return (
     
     <GoogleOAuthProvider clientId="471126766852-ghap4haabnrqjnpb6aq5s7am7b6hiho8.apps.googleusercontent.com">
-    <Router>
+   
+   <Elements stripe={stripePromise}>
+     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -43,17 +46,19 @@ const App = () => {
            <Route
               path="/payment"
               element={
-                <Elements stripe={stripePromise}>
+               
                   <PaymentPage />
-                </Elements>
+               
               }
             />
            <Route path="/login" element={<Login />} /> {/* Login Route */}
            <Route path="/register" element={<Register />} />
+           <Route path="/my-orders" element={<Myorders />} />
            <Route path="/managecontacts" element={<ManageContacts />} />
         </Route>
       </Routes>
     </Router>
+    </Elements>
       </GoogleOAuthProvider>
   );
 };

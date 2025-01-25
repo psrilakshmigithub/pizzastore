@@ -1,0 +1,47 @@
+.payment-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-summary {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.order-item {
+  margin-bottom: 10px;
+}
+
+.payment-section {
+  flex: 1;
+}
+
+.card-input {
+  margin-bottom: 20px;
+}
+
+.payment-options {
+  margin-bottom: 20px;
+}
+
+.pay-button {
+  background-color: #6772e5;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pay-button:disabled {
+  background-color: #ccc;
+}
+
+.error-message {
+  color: red;
+}

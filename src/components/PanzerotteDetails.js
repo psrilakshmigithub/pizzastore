@@ -57,7 +57,8 @@ const PanzerotteDetails = () => {
   const handleAddToCart = async () => {
    
     try {
-      const order = {        
+      const order = {   
+        userId: userId || null,     
         productId: panzerotte._id,
         flavor: selectedFlavor,
         toppings: selectedToppings,
@@ -71,7 +72,7 @@ const PanzerotteDetails = () => {
           alert('Item added to cart.');
           return;   
       }
-      await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
+      await axios.post('http://localhost:5000/api/cart',  order );
       alert('Panzerotte added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);

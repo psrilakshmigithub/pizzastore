@@ -62,7 +62,7 @@ const Layout = () => {
                       <li onMouseDown={() => handleMenuItemClick('/managecontacts')}>
                         My Account
                       </li>
-                      <li onMouseDown={() => handleMenuItemClick('/orders')}>
+                      <li onMouseDown={() => handleMenuItemClick('/my-orders')}>
                         My Orders
                       </li>
                       <li onMouseDown={handleLogout}>Logout</li>

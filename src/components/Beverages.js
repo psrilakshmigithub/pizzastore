@@ -32,30 +32,41 @@ const Beverages = () => {
   
   const handleAddToCart = async () => {    
     try {
-      const order = {       
-      productId: null, // Beverages may not have a specific productId
-      drinks,
-      totalPrice: calculateTotalPrice(drinks),
-    };
-    const drinks = Object.entries(selectedDrinks).map(([name, quantity]) => ({
-      name,
-      quantity,
-    }));
-    if (!userId) {
-      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
-      localCart.push(order);
-      localStorage.setItem('cart', JSON.stringify(localCart));
-      alert('Item added to cart.');
-      return;   
+      // Prepare drinks array first
+      const drinks = Object.entries(selectedDrinks)
+        .filter(([_, quantity]) => quantity > 0) // Ensure only drinks with quantity > 0 are included
+        .map(([name, quantity]) => ({
+          name,
+          quantity,
+        }));
+  
+      // Calculate the total price of the beverages
+      const totalPrice = calculateTotalPrice(drinks);
+  
+      const order = {  
+        userId: userId || null,     
+        productId: null, // Beverages may not have a specific productId
+        drinks,
+        totalPrice,
+      };
+  
+      if (!userId) {
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        localCart.push(order);
+        localStorage.setItem('cart', JSON.stringify(localCart));
+        alert('Item added to cart.');
+        return;   
+      }
+  
+      console.log('Order Payload:', order); // Debugging
+      await axios.post('http://localhost:5000/api/cart',  { userId, ...order });
+      alert('Beverages added to cart!');
+    } catch (error) {
+      console.error('Error adding beverages to cart:', error.message);
+      alert('Failed to add beverages to cart.');
     }
-    console.log('Order Payload:', order); // Debugging
-    await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
-    alert('Beverages added to cart!');
-  } catch (error) {
-    console.error('Error adding beverages to cart:', error);
-    alert('Failed to add beverages to cart.');
-  }
-};
+  };
+  
 
 
   const calculateTotalPrice = (drinks) => {

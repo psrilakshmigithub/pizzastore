@@ -111,12 +111,12 @@ const FamilyComboDetails = () => {
     
     try {
       const order = {
-      
+        userId: userId || null,
         productId: combo._id,
         size: selectedSize,
         wingsFlavor: selectedWingsFlavor,
         sides: [selectedSide], // Ensure sides are included as an array
-        drinks: selectedDrinks, // Updated to handle multiple drinks
+        drinks: selectedDrinks.map((drink) => ({ name: drink, quantity: 1 })), // Updated to handle multiple drinks
         toppings: selectedToppings,
         quantity,
         totalPrice: calculateTotalPrice(),
@@ -130,7 +130,7 @@ const FamilyComboDetails = () => {
         return;       
       }
 
-      await axios.post('http://localhost:5000/api/orders', { userId, ...order });
+      await axios.post('http://localhost:5000/api/cart', { userId, ...order });
       alert('Family combo added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);

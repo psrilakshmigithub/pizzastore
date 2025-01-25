@@ -18,7 +18,7 @@ const WingsDetails = () => {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
         setWing(response.data);
         setSelectedSize(response.data.details.sizes[0]);
-        setSelectedFlavor(response.data.details.Flavors[0]);
+        setSelectedFlavor(response.data.details.wingsFlavors[0]);
       } catch (error) {
         console.error('Error fetching wing details:', error);
       }
@@ -38,7 +38,8 @@ const WingsDetails = () => {
 
     try {
 
-      const order = {      
+      const order = {  
+        userId: userId || null,    
         productId: wing._id,
         size: selectedSize,
         flavor: selectedFlavor,
@@ -57,7 +58,7 @@ const WingsDetails = () => {
       }
       console.log('Order payload:', order);
 
-      await axios.post('http://localhost:5000/api/orders',  { userId, ...order });
+      await axios.post('http://localhost:5000/api/cart',   order );
       alert('Wing order added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -100,7 +101,7 @@ const WingsDetails = () => {
             value={selectedFlavor}
             onChange={(e) => setSelectedFlavor(e.target.value)}
           >
-            {wing.details.Flavors.map((flavor) => (
+            {wing.details.wingsFlavors.map((flavor) => (
               <option key={flavor} value={flavor}>
                 {flavor}
               </option>

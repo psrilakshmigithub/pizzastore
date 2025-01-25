@@ -13,9 +13,9 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       console.log("userId",userId);
-      if (!userId) {
-        console.log("not userId");
-        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (!userId || localCart.length > 0) {
+                console.log("not userId");        
         const populatedCart = await fetchProductDetails(localCart);
         setCartItems(
           Array.isArray(populatedCart) ? populatedCart.map((item) => ({
@@ -25,13 +25,7 @@ const Cart = () => {
         );
       } else {
         try {
-          console.log("else userId");
-          const localCart = JSON.parse(localStorage.getItem('cart')) || [];
-          console.log("localCart.length",localCart.length);
-          if (localCart.length > 0) {
-            await mergeCart(localCart);
-            localStorage.removeItem('cart'); // Clear local storage cart after merge
-          }
+          console.log("else userId");         
           const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
           console.log("response user id",response.data);
           setCartItems(Array.isArray(response.data.items) ? response.data.items : []); // Ensure an array is set
@@ -89,7 +83,8 @@ const Cart = () => {
 
   const handleQuantityChange = async (itemId, quantity) => {
     try {
-      if (userId) {
+      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (userId && !localCart.length>0 ) {
         console.log("user with qunatity chnage");
         const response = await axios.put(`http://localhost:5000/api/cart/${userId}/${itemId}`, { quantity });
         console.log("response.data.items",response.data);
@@ -121,7 +116,8 @@ const Cart = () => {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      if (userId) {
+      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (userId && !localCart.length>0 ) {
         const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${itemId}`);
         console.log("response.data.items",response.data);
         setCartItems(Array.isArray(response.data) ? response.data : []);
@@ -168,7 +164,12 @@ const Cart = () => {
         if (!userId) {
               navigate('/login', { state: { from: '/cart' } });
       } else {     
-       
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+          console.log("localCart.length",localCart.length);
+          if (localCart.length > 0) {
+            await mergeCart(localCart);
+            localStorage.removeItem('cart'); // Clear local storage cart after merge
+          }
         const newTotalPrice = calculateTotal();
         updateTotalPriceInCart(newTotalPrice);
         navigate('/checkout');

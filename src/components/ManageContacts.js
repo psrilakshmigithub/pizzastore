@@ -8,12 +8,13 @@ const libraries = ['places']; // Required for Google Places Autocomplete
 
 const ManageContacts = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [contacts, setContacts] = useState([]);
   const [newContact, setNewContact] = useState({ phone: '', address: '', isDefault: true });
   const [isAdding, setIsAdding] = useState(false); // Manage visibility of the add contact form
   const [editingContact, setEditingContact] = useState(null); // Track contact being edited
   const [error, setError] = useState('');
+  const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const ManageContacts = () => {
         const response = await axios.get(`http://localhost:5000/api/user/${userId}/contacts`);
         setContacts(response.data);
         console.log("resposne",response.data);
-        setIsAdding(response.data.length==0);
+        setIsAdding(response.data.length===0);
       } catch (error) {
         console.error('Error fetching contacts:', error);
       }
@@ -46,9 +47,9 @@ const ManageContacts = () => {
       setContacts(response.data);
       setNewContact({ phone: '', address: '', isDefault: false });
       setIsAdding(false); // Hide form after adding contact
-      const fromCheckout = location.state?.fromCheckout;
-      if (fromCheckout) {
-        navigate('/checkout');
+      const from = location.state?.from;
+      if (from) {
+        navigate(from);
       } 
     } catch (error) {
       console.error('Error adding contact:', error);
@@ -73,9 +74,9 @@ const ManageContacts = () => {
       );
       setContacts(response.data);
       setEditingContact(null); // Exit editing mode
-      const fromCheckout = location.state?.fromCheckout;
-      if (fromCheckout) {
-        navigate('/checkout');
+      const from = location.state?.from;
+      if (from) {
+        navigate(from);
       } 
     } catch (error) {
       console.error('Error updating contact:', error);
