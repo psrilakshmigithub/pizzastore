@@ -11,7 +11,7 @@
   
   /* Image Section */
   .details-image {
-    max-width: 100%;
+    max-width: 200px;
     height: auto;
     margin-bottom: 1rem;
     border-radius: 8px;

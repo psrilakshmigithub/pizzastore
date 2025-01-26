@@ -117,6 +117,8 @@ const ComboDetails = () => {
   if (!combo) return <div>Loading...</div>;
 
   return (
+    <div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
     <div className="details-container">
       <div className="product-container">
       <div className="prod-img"><img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" /></div>
@@ -188,7 +190,7 @@ const ComboDetails = () => {
         <p className="details-total">Total: ${calculateTotalPrice()}</p>
         <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>Add to Cart</button>
       </form>
-    </div>
+    </div></div>
   );
 };
 
