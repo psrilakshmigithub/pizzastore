@@ -1,6 +1,6 @@
-.min-h-screen {
+/* .min-h-screen {
     @apply bg-gray-100;
-  }
+  } */
   .header {
     @apply bg-red-600 text-white p-4;
   }
