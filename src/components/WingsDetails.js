@@ -69,15 +69,16 @@ const WingsDetails = () => {
   if (!wing) return <div>Loading...</div>;
 
   return (
+    <div>
+      <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
     <div className="details-container">
-      <img
-        src={`http://localhost:5000${wing.image}`}
-        alt={wing.name}
-        className="details-image"
-      />
+    <div className="product-container">
+    <div className="prod-img"><img src={`http://localhost:5000${wing.image}`} alt={wing.name} className="details-image"/></div>
+    <div className="prod-details">
       <h1 className="details-title">{wing.name}</h1>
       <p className="details-price">Price: ${wing.price.toFixed(2)}</p>
-
+    </div>
+    </div>
       <form className="details-form">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
@@ -131,6 +132,8 @@ const WingsDetails = () => {
         </button>
       </form>
     </div>
+    </div>
+
   );
 };
 

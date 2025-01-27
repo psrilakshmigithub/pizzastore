@@ -122,10 +122,11 @@ const ComboDetails = () => {
     <div className="details-container">
       <div className="product-container">
       <div className="prod-img"><img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" /></div>
-      <div className="prod-details"><h1 className="details-title">{combo.name}</h1>
-      <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
+      <div className="prod-details">
+        <h1 className="details-title">{combo.name}</h1>
+        <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
       </div>
-      </div>
+      </div> 
       <form className="details-form">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>

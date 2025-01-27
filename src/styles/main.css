@@ -1,6 +1,7 @@
 *{margin:0px;padding: 0px;}
 
-.product-container{display: flex;}
+.product-container{display: flex;    width: 80%;
+  margin: auto;}
 .prod-details{margin-left:1em;}
 /* .product-container .product-img{border: 1px;} */
 
