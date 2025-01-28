@@ -80,6 +80,7 @@ const WingsDetails = () => {
     </div>
     </div>
       <form className="details-form">
+        <div className="form-wrap">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select
@@ -120,7 +121,7 @@ const WingsDetails = () => {
             onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
           />
         </div>
-
+        </div>
         <p className="details-total">Total Price: ${calculateTotalPrice()}</p>
 
         <button

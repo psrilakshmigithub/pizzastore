@@ -128,6 +128,7 @@ const ComboDetails = () => {
       </div>
       </div> 
       <form className="details-form">
+      <div className="form-wrap">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
@@ -152,6 +153,8 @@ const ComboDetails = () => {
             ))}
           </select>
         </div>
+        </div>
+
         <div className="form-group">
           <label htmlFor="drinks">Choose Drinks:</label>
           <div id="drinks">
@@ -184,10 +187,11 @@ const ComboDetails = () => {
             </label>
           ))}
    </div>        </div>
+   <div className="form-wrap">
    <div className="form-group">
    <label htmlFor="quantity">Quantity:</label>
           <input type="number" min="1" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
-        </div>
+          </div></div>
         <p className="details-total">Total: ${calculateTotalPrice()}</p>
         <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>Add to Cart</button>
       </form>

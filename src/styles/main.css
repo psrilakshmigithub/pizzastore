@@ -6,6 +6,8 @@
 /* .product-container .product-img{border: 1px;} */
 
 /* Form Group */
+.form-wrap{display: flex; flex-direction: row;}
+.form-wrap .form-group{flex-grow: 1; margin-right: 1rem;}
 .form-group {
     /* display: flex; 
     justify-content: space-between;

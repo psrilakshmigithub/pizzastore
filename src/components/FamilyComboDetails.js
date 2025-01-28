@@ -155,6 +155,7 @@ const FamilyComboDetails = () => {
     </div>
     </div>
     <form className="details-form">
+      <div className="form-wrap">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
@@ -187,7 +188,7 @@ const FamilyComboDetails = () => {
             ))}
           </select>
         </div>
-
+</div>
         <div className="form-group">
           <label htmlFor="drinks">Choose Drinks:</label>
           <div id="drinks">
