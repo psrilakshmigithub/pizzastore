@@ -15,7 +15,7 @@
   }
 
   .form-group > div {display: flex;flex-wrap: wrap;margin-top:1rem ;}
-  .form-group > div label{font-weight: normal; cursor: pointer;background: rgba(220,232,241,1); border-radius: 4px; text-align: center; padding: 4px;}
+  .form-group > div label{font-weight: normal; cursor: pointer;background:rgba(241, 235, 220, 1); border-radius: 4px; text-align: center; padding: 4px;}
   .form-group > div label input{width: 100%;}
   .form-group label {
     font-size: 1rem;
@@ -66,5 +66,11 @@
     cursor: pointer;
   }
   .back-btn-wrap{    max-width: 844px;
-    margin: 2rem auto;
+    margin: 1rem auto;
     padding: 0rem;}
+
+    .beverages .item-card{border: 1px solid #e7dfcc;}
+    .beverages .category-card-image{height: 100px;}
+
+    .beverage-quantity{margin-top: 20px;}
+    .beverage-quantity input{padding: 8px; width: calc(100% - 18px); border-radius: 6px; border: 1px solid #555;}

@@ -141,12 +141,20 @@ const FamilyComboDetails = () => {
   if (!combo) return <div className="loading">Loading family combo details...</div>;
 
   return (
-    <div className="details-container">
-      <img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" />
-      <h1 className="details-title">{combo.name}</h1>
-      <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
-
-      <form className="details-form">
+   
+<div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
+  <div className="details-container">
+    <div className="product-container">
+    <div className="prod-img">
+    <img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" />
+    </div>
+    <div className="prod-details">
+    <h1 className="details-title">{combo.name}</h1>
+        <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
+    </div>
+    </div>
+    <form className="details-form">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
@@ -184,7 +192,7 @@ const FamilyComboDetails = () => {
           <label htmlFor="drinks">Choose Drinks:</label>
           <div id="drinks">
             {combo.details.drinks.map((drink) => (
-              <div key={drink}>
+              <label key={drink}>
                 <input
                   type="checkbox"
                   value={drink}
@@ -192,7 +200,7 @@ const FamilyComboDetails = () => {
                   onChange={() => handleDrinkSelection(drink)}
                 />
                 {drink}
-              </div>
+              </label>
             ))}
           </div>
         </div>
@@ -202,7 +210,7 @@ const FamilyComboDetails = () => {
             <label>Toppings for Pizza {pizzaIndex + 1} (Min {combo.details.toppingsPerPizza}):</label>
             <div>
               {toppings.map((topping) => (
-                <div key={topping.name}>
+                <label key={topping.name}>
                   <input
                     type="checkbox"
                     value={topping.name}
@@ -210,7 +218,7 @@ const FamilyComboDetails = () => {
                     onChange={() => handleToppingSelection(pizzaIndex, topping.name)}
                   />
                   {topping.name}
-                </div>
+                </label>
               ))}
             </div>
           </div>
@@ -233,7 +241,9 @@ const FamilyComboDetails = () => {
           Add to Cart
         </button>
       </form>
-    </div>
+  </div>
+  </div>
+
   );
 };
 

@@ -3,6 +3,7 @@
     margin: 0 auto;
     padding: 20px;
   }
+  .cart-container > p, .cart-container > h1{text-align: center;    margin-bottom: 40px;}
   
   .cart-item {
     display: flex;

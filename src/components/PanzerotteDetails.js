@@ -113,7 +113,7 @@ const PanzerotteDetails = () => {
           <label htmlFor="toppings">Choose Toppings:</label>
           <div id="toppings">
             {toppings.map((topping) => (
-              <div key={topping.name}>
+              <label key={topping.name}>
                 <input
                   type="checkbox"
                   value={topping.name}
@@ -121,7 +121,7 @@ const PanzerotteDetails = () => {
                   onChange={() => handleToppingSelection(topping.name)}
                 />
                 {topping.name}
-              </div>
+              </label>
             ))}
           </div>
         </div>

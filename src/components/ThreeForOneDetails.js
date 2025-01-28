@@ -123,7 +123,7 @@ const ThreeForOneDetails = () => {
             <label>Toppings for Pizza {pizzaIndex + 1} (Min {deal.details.toppingsPerPizza}):</label>
             <div>
               {toppings.map((topping) => (
-                <div key={topping.name}>
+                <label key={topping.name}>
                   <input
                     type="checkbox"
                     value={topping.name}
@@ -131,7 +131,7 @@ const ThreeForOneDetails = () => {
                     onChange={() => handleToppingSelection(pizzaIndex, topping.name)}
                   />
                   {topping.name}
-                </div>
+                </label>
               ))}
             </div>
           </div>

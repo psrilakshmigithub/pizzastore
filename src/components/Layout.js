@@ -52,7 +52,7 @@ const Layout = () => {
                 <button
                   className="user-menu-button"
                   onClick={toggleDropdown}
-                  onBlur={closeDropdown}
+                  
                 >
                   {user.name}
                 </button>
