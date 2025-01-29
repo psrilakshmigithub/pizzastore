@@ -117,14 +117,18 @@ const ComboDetails = () => {
   if (!combo) return <div>Loading...</div>;
 
   return (
+    <div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
     <div className="details-container">
       <div className="product-container">
       <div className="prod-img"><img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" /></div>
-      <div className="prod-details"><h1 className="details-title">{combo.name}</h1>
-      <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
+      <div className="prod-details">
+        <h1 className="details-title">{combo.name}</h1>
+        <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
       </div>
-      </div>
+      </div> 
       <form className="details-form">
+      <div className="form-wrap">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
@@ -149,6 +153,8 @@ const ComboDetails = () => {
             ))}
           </select>
         </div>
+        </div>
+
         <div className="form-group">
           <label htmlFor="drinks">Choose Drinks:</label>
           <div id="drinks">
@@ -181,14 +187,15 @@ const ComboDetails = () => {
             </label>
           ))}
    </div>        </div>
+   <div className="form-wrap">
    <div className="form-group">
    <label htmlFor="quantity">Quantity:</label>
           <input type="number" min="1" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
-        </div>
+          </div></div>
         <p className="details-total">Total: ${calculateTotalPrice()}</p>
         <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>Add to Cart</button>
       </form>
-    </div>
+    </div></div>
   );
 };
 

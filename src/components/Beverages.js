@@ -77,7 +77,9 @@ const Beverages = () => {
   };
 
   return (
-    <div className="details-container">
+<div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
+    <div className="details-container beverages">
       <h1 className="details-title">Beverages</h1>
       <div className="grid-layout">
         {beverages.map((bev) => (
@@ -101,7 +103,7 @@ const Beverages = () => {
       <button className="add-to-cart-btn" onClick={handleAddToCart}>
         Add to Cart
       </button>
-    </div>
+    </div></div>
   );
 };
 

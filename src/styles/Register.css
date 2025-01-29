@@ -2,9 +2,9 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; */
   }
   
   .register-form h2 {
@@ -15,7 +15,7 @@
   .register-form input,
   .register-form textarea {
     display: block;
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ddd;
@@ -30,7 +30,7 @@
   }
   
   button {
-    display: inline-block;
+    width: 100%;
     margin: 10px 0;
     padding: 10px 20px;
     color: white;
@@ -41,6 +41,8 @@
   }
   
   button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
+    background:rgb(243, 203, 1) ;
+    color: #000;
   }
   

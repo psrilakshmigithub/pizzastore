@@ -41,18 +41,18 @@ const Layout = () => {
         <nav className="nav-links">
           <ul>
             <li>
-              <a href="/">Home</a>
+              <a href="/"> <i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
             {!user ? (
               <li>
-                <a href="/login">Login</a>
+                <a href="/login"><i class="fa fa-user" aria-hidden="true"></i> Login</a>
               </li>
             ) : (
               <li className="user-menu">
                 <button
                   className="user-menu-button"
                   onClick={toggleDropdown}
-                  onBlur={closeDropdown}
+                  
                 >
                   {user.name}
                 </button>
@@ -74,7 +74,7 @@ const Layout = () => {
             )}
          
               <li>
-                <a href="/cart">Cart</a>
+                <a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</a>
               </li>
            
           </ul>
@@ -86,6 +86,7 @@ const Layout = () => {
           <h1>Welcome to Pizza Store</h1>
           <p>Your one-stop destination for delicious pizzas, combos, and more!</p>
         </div>
+        
         <div className="content-section">
           <main className="main-content">
             <Outlet />

@@ -83,12 +83,21 @@ const PanzerotteDetails = () => {
   if (!panzerotte) return <div className="loading">Loading panzerotte details...</div>;
 
   return (
-    <div className="details-container">
-      <img src={`http://localhost:5000${panzerotte.image}`} alt={panzerotte.name} className="details-image" />
-      <h1 className="details-title">{panzerotte.name}</h1>
-      <p className="details-price">Base Price: ${panzerotte.price.toFixed(2)}</p>
-
-      <form className="details-form">
+  
+<div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
+  <div className="details-container">
+    <div className="product-container">
+    <div className="prod-img">
+    <img src={`http://localhost:5000${panzerotte.image}`} alt={panzerotte.name} className="details-image" />
+    </div>
+    <div className="prod-details">
+    <h1 className="details-title">{panzerotte.name}</h1>
+    <p className="details-price">Base Price: ${panzerotte.price.toFixed(2)}</p>
+    </div>
+    </div>
+    
+    <form className="details-form">
         <div className="form-group">
           <label htmlFor="flavor">Choose Flavor:</label>
           <select id="flavor" value={selectedFlavor} onChange={(e) => setSelectedFlavor(e.target.value)}>
@@ -104,7 +113,7 @@ const PanzerotteDetails = () => {
           <label htmlFor="toppings">Choose Toppings:</label>
           <div id="toppings">
             {toppings.map((topping) => (
-              <div key={topping.name}>
+              <label key={topping.name}>
                 <input
                   type="checkbox"
                   value={topping.name}
@@ -112,7 +121,7 @@ const PanzerotteDetails = () => {
                   onChange={() => handleToppingSelection(topping.name)}
                 />
                 {topping.name}
-              </div>
+              </label>
             ))}
           </div>
         </div>
@@ -134,7 +143,12 @@ const PanzerotteDetails = () => {
           Add to Cart
         </button>
       </form>
-    </div>
+  </div>
+  </div>
+
+
+
+
   );
 };
 

@@ -92,12 +92,18 @@ const TwoForOneDetails = () => {
   if (!deal) return <div className="loading">Loading deal details...</div>;
 
   return (
-    <div className="details-container">
-      <img src={`http://localhost:5000${deal.image}`} alt={deal.name} className="details-image" />
-      <h1 className="details-title">{deal.name}</h1>
-      <p className="details-price">Base Price: ${deal.price.toFixed(2)}</p>
 
-      <form className="details-form">
+<div>
+    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
+  <div className="details-container">
+    <div className="product-container">
+    <div className="prod-img"><img src={`http://localhost:5000${deal.image}`} alt={deal.name} className="details-image" /></div>
+    <div className="prod-details">
+    <h1 className="details-title">{deal.name }</h1>
+    <p className="details-price">Base Price: ${deal.price.toFixed(2)}</p>
+    </div>
+    </div>
+    <form className="details-form">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
@@ -114,7 +120,7 @@ const TwoForOneDetails = () => {
             <label>Toppings for Pizza {pizzaIndex + 1} (Min {deal.details.toppingsPerPizza}):</label>
             <div>
               {toppings.map((topping) => (
-                <div key={topping.name}>
+                <label key={topping.name}>
                   <input
                     type="checkbox"
                     value={topping.name}
@@ -122,7 +128,7 @@ const TwoForOneDetails = () => {
                     onChange={() => handleToppingSelection(pizzaIndex, topping.name)}
                   />
                   {topping.name}
-                </div>
+                </label>
               ))}
             </div>
           </div>
@@ -145,7 +151,15 @@ const TwoForOneDetails = () => {
           Add to Cart
         </button>
       </form>
-    </div>
+  </div>
+  </div>
+
+
+
+
+
+
+
   );
 };
 
