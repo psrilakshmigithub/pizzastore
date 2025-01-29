@@ -41,7 +41,7 @@ const Cart = () => {
   }, [userId]);
 
   const calculateSubtotal = () =>
-    cartItems.reduce((total, item) => total + (item.productId.price * item.quantity || 0), 0);
+    cartItems.reduce((total, item) => total + (item.totalPrice * item.quantity || 0), 0);
 
   const calculateTax = (subtotal) => subtotal * taxRate;
 
@@ -216,7 +216,7 @@ const Cart = () => {
                     }
                   />
                 </div>
-                <p>Total: ${(item.quantity * item.productId.price).toFixed(2)}</p>
+                <p>Total: ${(item.quantity * item.totalPrice).toFixed(2)}</p>
               </div>
               <button
                 className="delete-btn"

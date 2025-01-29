@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { WebSocket } from 'ws';
 import '../styles/Payment.css';
 
 const PaymentPage = () => {
@@ -13,19 +14,18 @@ const PaymentPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentOption, setPaymentOption] = useState('online');
+  const [isWaitingForConfirmation, setIsWaitingForConfirmation] = useState(false);
   const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
   useEffect(() => {
-    // Fetch the total amount and cart items
     const fetchCartDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
-        console.log("response",response.data);
         const cart = response.data;
         setTotalAmount(cart.totalPrice);
-        setCartItems(response.data.items || []); // Ensure an array is set       
-        console.log("cart",cart);
+        setCartItems(cart.items);
+
         // Create a Payment Intent on the server
         const paymentIntentResponse = await axios.post('http://localhost:5000/api/payment/create-payment-intent', {
           amount: cart.totalPrice * 100, // Amount in cents
@@ -34,7 +34,8 @@ const PaymentPage = () => {
         });
         setClientSecret(paymentIntentResponse.data.clientSecret);
       } catch (error) {
-        console.error('Error fetching cart details:', error.message);
+        console.error('Error fetching cart details or creating payment intent:', error.message);
+        setErrorMessage('Failed to create payment intent. Please try again.');
       }
     };
 
@@ -58,29 +59,56 @@ const PaymentPage = () => {
         } else if (paymentResult.paymentIntent.status === 'succeeded') {
           alert('Payment successful!');
 
-          console.log("paymentResult.paymenet intend",paymentResult.paymentIntent);
+          console.log("paymentResult.paymentIntent", paymentResult.paymentIntent);
           // Update the cart status and move it to orders collection
-          await axios.post('http://localhost:5000/api/cart/complete-order', {
+          await axios.post('http://localhost:5000/api/orders/complete-order', {
             userId,
             paymentIntentId: paymentResult.paymentIntent.id,
             paymentOption: 'online',
           });
 
-          // Redirect to order confirmation page
-          navigate('/my-orders');
+          // Show waiting for confirmation popup
+          setIsWaitingForConfirmation(true);
+
+          // Set up WebSocket connection
+          const socket = new WebSocket('ws://localhost:5000');
+
+          socket.onopen = () => {
+            console.log('Connected to WebSocket server');
+          };
+
+          socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'order-accepted') {
+              setIsWaitingForConfirmation(false);
+              navigate('/my-orders');
+            }
+          };
+
+          socket.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+          };
+
+          // Set a timeout to automatically cancel the order if no confirmation is received within 2 minutes
+          setTimeout(() => {
+            if (isWaitingForConfirmation) {
+              setIsWaitingForConfirmation(false);
+              setErrorMessage('Order was not confirmed in time and has been cancelled.');
+              // Optionally, you can also send a request to cancel the order on the server
+            }
+          }, 2 * 60 * 1000); // 2 minutes
         }
       } else {
         // Handle other payment options (pay when pickup or delivery, pay in cash)
-        await axios.post('http://localhost:5000/api/cart/complete-order', {
+        await axios.post('http://localhost:5000/api/orders/complete-order', {
           userId,
-          paymentIntentId: null, // No payment intent ID for non-online payments
           paymentOption,
+          paymentIntentId: null, // No payment intent ID for non-online payments
         });
 
         alert('Order placed successfully!');
 
         // Redirect to order confirmation page
-        
         navigate('/my-orders');
       }
     } catch (error) {
@@ -153,6 +181,12 @@ const PaymentPage = () => {
           </button>
         </form>
       </div>
+
+      {isWaitingForConfirmation && (
+        <div className="confirmation-popup">
+          <p>Please wait for confirmation from the store...</p>
+        </div>
+      )}
     </div>
   );
 };
