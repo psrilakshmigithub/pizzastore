@@ -37,6 +37,9 @@
     font-size: 1rem;
   }
 
+  .form-group input[type=radio] {
+    width:auto;margin-right: 8px;}
+
 /* 
   
   .form-group label {
