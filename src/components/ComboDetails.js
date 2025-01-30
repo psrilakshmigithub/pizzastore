@@ -6,7 +6,10 @@ import '../styles/Details.css';
 const ComboDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [combo, setCombo] = useState(null);
+  const [combo, setCombo] = useState({
+    price: 0, 
+    details: { sizes: [], wingsFlavors: [], sides: [], drinks: [], sizePrices: {} }
+  });
   const [toppings, setToppings] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -44,34 +47,35 @@ const ComboDetails = () => {
     const fetchDrinks = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/products/beverages');
-        setCombo((prevCombo) => ({
-          ...prevCombo,
-          details: {
-            ...prevCombo.details,
-            drinks: response.data.map((drink) => drink.name),
-          
-          },
-        }));
+        setCombo((prevCombo) => {
+          if (!prevCombo) return null; // Ensure prevCombo is not null before spreading
+          return {
+            ...prevCombo,
+            details: {
+              ...prevCombo.details,
+              drinks: response.data.map((drink) => drink.name),
+            },
+          };
+        });
       } catch (error) {
-        console.error('Error fetching drinks:', error.message);
+        console.error('Error fetching drinks:', error);
       }
     };
-
     fetchComboDetails();
     fetchToppings();
     fetchDrinks();
   }, [id]);
-
+  
   const calculateTotalPrice = () => {
-    if (!combo) return 0;
-
-    const sizePriceAdjustment = combo.details.sizePrices[selectedSize] || 0;
+    if (!combo || !combo.details) return "0.00"; // Ensure combo and details exist
+  
+    const basePrice = combo?.price ?? 0; // Default to 0 if undefined
+    const sizePriceAdjustment = combo.details.sizePrices?.[selectedSize] ?? 0; // Default to 0
     const extraToppingsPrice =
       Math.max(0, selectedToppings.length - combo.details.toppingsPerPizza) * combo.details.extraToppingPrice;
 
-    return ((combo.price + sizePriceAdjustment + extraToppingsPrice) * quantity).toFixed(2);
+    return ((basePrice + sizePriceAdjustment + extraToppingsPrice) * (quantity)).toFixed(2);
   };
-
   const handleToppingSelection = (topping) => {
     setSelectedToppings((prev) =>
       prev.includes(topping) ? prev.filter((t) => t !== topping) : [...prev, topping]
@@ -124,7 +128,10 @@ const ComboDetails = () => {
       <div className="prod-img"><img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" /></div>
       <div className="prod-details">
         <h1 className="details-title">{combo.name}</h1>
-        <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
+        <p className="details-price">
+  Base Price: ${combo?.price ? combo.price.toFixed(2) : "0.00"}
+</p>
+       
       </div>
       </div> 
       <form className="details-form">

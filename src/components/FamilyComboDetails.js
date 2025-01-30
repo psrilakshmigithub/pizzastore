@@ -5,7 +5,10 @@ import '../styles/Details.css';
 
 const FamilyComboDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
-  const [combo, setCombo] = useState(null);
+  const [combo, setCombo] = useState({
+    price: 0, 
+    details: { sizes: [], wingsFlavors: [], sides: [], drinks: [], sizePrices: {} }
+  });
   const navigate = useNavigate();
   const [toppings, setToppings] = useState([]);
   const [selectedToppings, setSelectedToppings] = useState([]); // Array of arrays for each pizza
@@ -20,8 +23,7 @@ const FamilyComboDetails = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
         setCombo(response.data);
-
-        // Initialize toppings for each pizza
+               // Initialize toppings for each pizza
         const initialToppings = Array(response.data.details.pizzas).fill([]);
         setSelectedToppings(initialToppings);
 
@@ -46,38 +48,36 @@ const FamilyComboDetails = () => {
       }
     };
     const fetchDrinks = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/api/products/beverages');
-          setCombo((prevCombo) => ({
+      try {
+        const response = await axios.get('http://localhost:5000/api/products/beverages');
+        setCombo((prevCombo) => {
+          if (!prevCombo) return null; // Ensure prevCombo is not null before spreading
+          return {
             ...prevCombo,
             details: {
               ...prevCombo.details,
               drinks: response.data.map((drink) => drink.name),
             },
-          }));
-        } catch (error) {
-          console.error('Error fetching drinks:', error);
-        }
-      };
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching drinks:', error);
+      }
+    };
     fetchComboDetails();
     fetchToppings();
     fetchDrinks();
   }, [id]);
 
   const calculateTotalPrice = () => {
-    if (!combo) return 0;
+    if (!combo || !combo.details) return "0.00"; // Ensure combo and details exist
+  
+    const basePrice = combo?.price ?? 0; // Default to 0 if undefined
+    const sizePriceAdjustment = combo.details.sizePrices?.[selectedSize] ?? 0; // Default to 0
+    const extraToppingsPrice =
+      Math.max(0, selectedToppings.length - combo.details.toppingsPerPizza) * combo.details.extraToppingPrice;
 
-    const sizePriceAdjustment = combo.details.sizePrices[selectedSize] || 0;
-
-    const extraToppingsPrice = selectedToppings.reduce((total, pizzaToppings) => {
-      return (
-        total +
-        Math.max(0, pizzaToppings.length - combo.details.toppingsPerPizza) *
-        combo.details.extraToppingPrice
-      );
-    }, 0);
-
-    return ((combo.price + sizePriceAdjustment + extraToppingsPrice) * quantity).toFixed(2);
+    return ((basePrice + sizePriceAdjustment + extraToppingsPrice) * (quantity)).toFixed(2);
   };
 
   const handleToppingSelection = (pizzaIndex, topping) => {
@@ -151,7 +151,9 @@ const FamilyComboDetails = () => {
     </div>
     <div className="prod-details">
     <h1 className="details-title">{combo.name}</h1>
-        <p className="details-price">Base Price: ${combo.price.toFixed(2)}</p>
+    <p className="details-price">
+  Base Price: ${combo?.price ? combo.price.toFixed(2) : "0.00"}
+</p>
     </div>
     </div>
     <form className="details-form">
