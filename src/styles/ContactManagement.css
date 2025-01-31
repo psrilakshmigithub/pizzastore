@@ -4,6 +4,13 @@
     padding: 20px;
   }
   
+  .add-contact {
+margin-top: 24px;
+  }
+  .add-contact h2{font-weight: 200; margin-bottom:10px;}
+  .form-wrap{display: flex;}
+  
+
   .new-contact-form, .contact-item {
     border: 1px solid #ccc;
     padding: 10px;

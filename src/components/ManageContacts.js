@@ -128,7 +128,7 @@ const ManageContacts = () => {
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg" libraries={libraries}>
-      <div className="contact-management">
+      <div className="contact-management details-container">
         <h1>Manage Contacts</h1>
 
         {contacts.length === 0 && !isAdding ? (
@@ -140,24 +140,36 @@ const ManageContacts = () => {
         {/* Add Contact Form */}
         {isAdding && (
           <div className="add-contact">
-            <h2>Add Contact</h2>
-            <input
+            <h2>Add Contact Details</h2>
+
+            <div className="form-group">
+          <label htmlFor="toppings">Phone No</label>
+          <div>
+          <input
               type="text"
-              placeholder="Phone"
+              placeholder="Enter Phone"
               value={newContact.phone}
               onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
             />
-            <Autocomplete
+          </div></div>
+
+          <div className="form-group">
+          <label htmlFor="toppings">Address</label>
+          <Autocomplete
               onLoad={(autocomplete) => (newContact.autocomplete = autocomplete)}
               onPlaceChanged={() => handlePlaceSelect(newContact.autocomplete)}
             >
               <input
                 type="text"
-                placeholder="Delivery Address"
+                placeholder="Type Delivery Address"
                 value={newContact.address}
                 onChange={(e) => setNewContact({ ...newContact, address: e.target.value })}
               />
             </Autocomplete>
+          </div>
+
+            
+          <div className="form-group">
             <label>
               <input
                 type="radio"
@@ -167,6 +179,8 @@ const ManageContacts = () => {
               />
               Set as Default
             </label>
+</div>
+            
             <button onClick={handleAddContact}>Save</button>
             <button onClick={() => setIsAdding(false)}>Cancel</button>
           </div>

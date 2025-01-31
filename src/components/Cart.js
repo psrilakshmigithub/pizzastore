@@ -189,19 +189,20 @@ const Cart = () => {
   };
 
   return (
-    <div className="cart-container">
+    <div className="cart-wrap"><div className="cart-container details-container">
       <h1>Cart</h1>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
           {cartItems.map((item) => (
-            <div key={item._id} className="cart-item">
+            <div className="''"><div key={item._id} className="cart-item">
               <img
                 src={`http://localhost:5000${item.productId.image}`}
                 alt={item.productId.name}
                 className="cart-item-image"
               />
+              
               <div className="cart-item-details">
                 <h3>{item.productId.name}</h3>
                 <p>Price: ${item.productId.price.toFixed(2)}</p>
@@ -217,17 +218,19 @@ const Cart = () => {
                   />
                 </div>
                 <p>Total: ${(item.quantity * item.totalPrice).toFixed(2)}</p>
+                <button className="delete-btn" onClick={() => handleDeleteItem(item._id)}> Remove </button>
               </div>
-              <button
-                className="delete-btn"
-                onClick={() => handleDeleteItem(item._id)}
-              >
-                Remove
-              </button>
-            </div>
+              
+            </div></div>
           ))}
 
-          <div className="cart-summary">
+          
+
+          
+        </>
+      )}
+    </div>
+    <div className="cart-summary details-container">
             <h2>Order Summary</h2>
             <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
             <p>HST (13%): ${calculateTax(calculateSubtotal()).toFixed(2)}</p>
@@ -248,13 +251,10 @@ const Cart = () => {
               </select>
             </div>
             <h3>Total: ${calculateTotal()}</h3>
-          </div>
-
-          <button className="checkout-btn" onClick={handleCheckout}>
+            <button className="checkout-btn" onClick={handleCheckout}>
             Proceed to Checkout
           </button>
-        </>
-      )}
+          </div>
     </div>
   );
 };
