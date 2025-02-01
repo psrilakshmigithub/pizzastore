@@ -7,6 +7,40 @@
   .add-contact {
 margin-top: 24px;
   }
+
+  .contact-card{background:rgba(248,249,250,1);
+    border: 1px solid rgb(228 231 235);
+    border-radius: 8px;
+    padding: 16px;
+    line-height: 2;
+    color: rgba(0, 0, 0, 0.8);margin-bottom: 24px;}
+
+    .contact-cta{display: flex;column-gap: 24px;}
+    .contact-cta button{    background: #e3effd;
+      color:#454646;
+      font-size: 16px;
+      border: 1px solid #648db9;}
+      .contact-cta button.delete { 
+        background: #ff9797;
+    border: 1px solid #e37474;
+    color: #3e1616;
+      }
+.add-contact-btn{
+  background: #e3effd;
+  color: #454646;
+  font-size: 16px;
+  border: 1px solid #648db9;
+  margin-top: 24px;
+  padding: 16px 24px;
+}
+.add-contact-btn i{
+  font-size: 24px;
+    font-weight: 100;
+    margin-bottom: 16px;
+}
+
+
+
   .add-contact h2{font-weight: 200; margin-bottom:10px;}
   .form-wrap{display: flex;}
   

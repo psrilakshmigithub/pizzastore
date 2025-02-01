@@ -228,7 +228,7 @@ const Cart = () => {
             <h2>Order Summary</h2>
             <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
             <p>HST (13%): ${calculateTax(calculateSubtotal()).toFixed(2)}</p>
-            <div className="tip-selection">
+            <div className="tip-selection form-group">
               <label htmlFor="tip">Tip:</label>
               <select
                 id="tip"
