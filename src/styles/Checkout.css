@@ -11,6 +11,9 @@
   {
     display: flex;
   }
+
+  .checkout-container .form-group > div label{background: #fff;}
+
   .checkout-container h1 {
     text-align: center;
     margin-bottom: 20px;

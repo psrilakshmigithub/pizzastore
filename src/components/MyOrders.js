@@ -20,7 +20,7 @@ const MyOrdersPage = () => {
   }, [userId]);
 
   return (
-    <div className="my-orders-container">
+    <div className="my-orders-container details-container">
       <h1>My Orders</h1>
       {orders.length === 0 ? (
         <p>No orders found.</p>

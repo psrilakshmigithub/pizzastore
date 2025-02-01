@@ -80,7 +80,7 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="payment-container">
+    <div className="payment-container details-container">
       <div className="order-summary">
         <h2>Order Summary</h2>
         {cartItems.map((item) => (
@@ -90,12 +90,13 @@ const PaymentPage = () => {
             <p>Price: ${item.totalPrice.toFixed(2)}</p>
           </div>
         ))}
-        <h3>Total: ${totalAmount.toFixed(2)}</h3>
+        
       </div>
      
       <div className="payment-section">
         <h1>Payment</h1>
-        <p>Total Amount: ${totalAmount.toFixed(2)}</p>
+        <div className='order-item'>
+        <h3>Total Amout ${totalAmount.toFixed(2)}</h3>
 
       <form onSubmit={handlePayment}>
         <div className="payment-options">
@@ -125,7 +126,7 @@ const PaymentPage = () => {
           {isProcessing ? 'Processing...' : 'Place My Order'}
         </button>
       </form>
-
+</div>
       </div>
     </div>
   );
