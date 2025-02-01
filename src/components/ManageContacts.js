@@ -188,7 +188,7 @@ const ManageContacts = () => {
 
         {/* Existing Contacts */}
         {contacts.length > 0 && (
-          <div className="contacts-list">
+          <div className="add-contact">
             {contacts.map((contact) => (
               <div key={contact._id} className="contact-card">
                 {editingContact && editingContact._id === contact._id ? (

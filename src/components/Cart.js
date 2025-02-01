@@ -224,13 +224,7 @@ const Cart = () => {
             </div></div>
           ))}
 
-          
-
-          
-        </>
-      )}
-    </div>
-    <div className="cart-summary details-container">
+<div className="cart-summary details-container">
             <h2>Order Summary</h2>
             <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
             <p>HST (13%): ${calculateTax(calculateSubtotal()).toFixed(2)}</p>
@@ -255,6 +249,12 @@ const Cart = () => {
             Proceed to Checkout
           </button>
           </div>
+
+          
+        </>
+      )}
+    </div>
+    
     </div>
   );
 };

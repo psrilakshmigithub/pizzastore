@@ -29,6 +29,7 @@ const App = () => {
     <GoogleOAuthProvider clientId="471126766852-ghap4haabnrqjnpb6aq5s7am7b6hiho8.apps.googleusercontent.com">
    
    <Elements stripe={stripePromise}>
+    
      <Router>
       <Routes>
         <Route path="/" element={<Layout />}>

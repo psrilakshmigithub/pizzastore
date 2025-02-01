@@ -27,8 +27,10 @@ const ComboDetails = () => {
         setSelectedSize(response.data.details.sizes[0]);
         setSelectedFlavor(response.data.details.wingsFlavors[0]);
         setSelectedSide(response.data.details.sides[0]);
-        if (response.data.details.drinks?.length > 0) {
+       
+        if (response.data.details.drinks && response.data.details.drinks.length > 0) {
           setSelectedDrinks([]);
+
         }
       } catch (error) {
         console.error('Error fetching combo details:', error);
@@ -82,11 +84,23 @@ const ComboDetails = () => {
     );
   };
 
-  const handleDrinkSelection = (drinkName) => {
-    setSelectedDrinks((prevDrinks) =>
-      prevDrinks.includes(drinkName) ? prevDrinks.filter((drink) => drink !== drinkName) : [...prevDrinks, drinkName]
-    );
+  
+
+  const handleDrinkSelection = (drink) => {
+    setSelectedDrinks((prev) => {
+      if (prev.includes(drink)) {
+        return prev.filter((d) => d !== drink);
+      } else {
+        if (prev.length < 2) {
+          return [...prev, drink];
+        } else {
+          alert('You can select a maximum of 4 drinks.');
+          return prev;
+        }
+      }
+    });
   };
+ 
 
   const handleAddToCart = async () => {
     try {

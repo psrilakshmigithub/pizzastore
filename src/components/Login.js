@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { FacebookLogin } from 'react-facebook-login-lite';
 import { jwtDecode } from 'jwt-decode';
+import { UserContext } from '../context/userContext';
 import axios from 'axios';
 
 import '../styles/Login.css';
@@ -11,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { user, setUser } = useContext(UserContext); 
   const location = useLocation();
 
 
@@ -26,10 +28,13 @@ const Login = () => {
       console.log(response.data);
       if (response.data.user.contacts.length==0) {
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        setUser(response.data.user); // Update the user context
+        const from = location.state?.from || '/';
         navigate('/managecontacts');
         
       } else {
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        setUser(response.data.user);
         const from = location.state?.from || '/';
         navigate(from);
       }
@@ -74,7 +79,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(response.data.user));     
+      localStorage.setItem('user', JSON.stringify(response.data.user));  
+      setUser(response.data.user); // Update the user context      
       const from = location.state?.from || '/';
       navigate(from);
     } catch (error) {

@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect,useContext } from 'react';
+import { Outlet, useNavigate,Link } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 import '../styles/Layout.css';
 import '../styles/main.css'
+import logo from '../images/pizza-logo.png';
 
 const Layout = () => {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
+    setDropdownOpen(false);
     if (storedUser) {
       setUser(storedUser);
     }
-  }, []);
+  }, [setUser]);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -37,7 +40,12 @@ const Layout = () => {
   return (
     <div className="layout">
       <header className="navbar">
-        <div className="logo"><a alt="Jumbo 3 for 1 Pizza and Wings"><img src="..src/images/pizza-banner.jpg"></img></a></div>
+        <div className="logo">
+        <Link to="/">
+            <img src={logo} alt="Jumbo 3 for 1 Pizza and Wings" />
+          </Link>
+         
+          </div>
         <nav className="nav-links">
           <ul>
             <li>
@@ -49,12 +57,13 @@ const Layout = () => {
               </li>
             ) : (
               <li className="user-menu">
+                
                 <button
                   className="user-menu-button"
                   onClick={toggleDropdown}
                   
                 >
-                  {user.name}
+                  <i class="fa fa-user" aria-hidden="true"></i> {user.name}
                 </button>
                 {dropdownOpen && (
                   <div className="user-menu-dropdown active">
@@ -83,7 +92,7 @@ const Layout = () => {
 
       <div className="main-layout">
         <div className="main-banner">
-          <h1>Welcome to Pizza Store</h1>
+          <h1>Welcome to Jumbo 3 for 1 Pizza Store</h1>
           <p>Your one-stop destination for delicious pizzas, combos, and more!</p>
         </div>
         

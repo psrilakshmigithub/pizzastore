@@ -33,8 +33,9 @@ const MyOrdersPage = () => {
               <p>Status: {order.status}</p>
               <div className="order-items">
                 {order.items.map((item) => (
-                  <div key={item._id} className="order-item-details">
-                    <img src={item.productId.image} alt={item.productId.name} className="product-image" />
+                  <div key={item._id} className="order-item-details">                              
+                    <img src={`http://localhost:5000${item.productId.image}`}
+                     alt={item.productId.name} className="cart-item-image" />
                     
                     <div className="item-details">
                       <p>{item.productId.name}</p>
