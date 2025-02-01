@@ -94,7 +94,7 @@ const ComboDetails = () => {
         if (prev.length < 2) {
           return [...prev, drink];
         } else {
-          alert('You can select a maximum of 4 drinks.');
+          alert('You can select a maximum of 2 drinks.');
           return prev;
         }
       }
