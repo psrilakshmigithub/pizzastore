@@ -45,18 +45,18 @@
   padding: 0.3rem 0.7rem;
   border-radius: 12px;
   font-size: 0.9rem;
-  color: #fff;
+  color: #f1ede9;
 }
 
 .order-status.pending {
   background-color: #f0ad4e;
 }
 
-.order-status.completed {
+.order-status.accepted {
   background-color: #5cb85c;
 }
 
-.order-status.cancelled {
+.order-status.declined {
   background-color: #d9534f;
 }
 

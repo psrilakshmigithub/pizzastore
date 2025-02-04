@@ -10,6 +10,7 @@ import ThreeForOneDetails from "./components/ThreeForOneDetails";
 import TwoForOneDetails from "./components/TwoForOneDetails";
 import PanzerotteDetails from "./components/PanzerotteDetails";
 import BeveragesDetails from "./components/Beverages";
+import SuperBowlWingsDetails from "./components/SuperBowlWingsDetails";
 import Sides from "./components/Sides";
 import Cart from "./components/Cart";
 import Checkout from "./pages/CheckoutPage";
@@ -57,6 +58,7 @@ const App = () => {
                 <Route path="panzerotte/:id" element={<PanzerotteDetails />} />
                 <Route path="category/beverages" element={<BeveragesDetails />} />
                 <Route path="sides/:id" element={<Sides />} />
+                <Route path="/superbowlcombo/:id" element={<SuperBowlWingsDetails />} />
                 <Route path="/cart" element={<Cart storeOpen={storeOpen} />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/payment" element={<PaymentPage storeOpen={storeOpen} />} />

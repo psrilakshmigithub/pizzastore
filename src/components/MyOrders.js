@@ -31,9 +31,10 @@ const MyOrdersPage = () => {
             <div key={order._id} className="order-card">
               <div className="order-header">
                 <h2>Order #{order._id}</h2>
+               
                 <span className={`order-status ${order.status.toLowerCase()}`}>
-                  {order.status}
-                </span>
+              {order.isOrderConfirmed ? order.status : 'Order not confirmed'}
+            </span>
               </div>
               <div className="order-body">
                 <div className="order-info">
