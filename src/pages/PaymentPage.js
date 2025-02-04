@@ -8,9 +8,10 @@ const PaymentPage = () => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-
+ const [taxRate] = useState(0.13); // Example: 13% tax
   const [clientSecret, setClientSecret] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [tip, setTip] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -28,6 +29,7 @@ const PaymentPage = () => {
         const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
         const cart = response.data;
         setTotalAmount(cart.totalPrice);
+        setTip(cart.tip);
         setCartItems(cart.items);
 
         const paymentIntentResponse = await axios.post("http://localhost:5000/api/payment/create-payment-intent", {
@@ -113,24 +115,56 @@ const PaymentPage = () => {
     }
   };
 
+  const calculateTax = (subtotal) => subtotal * taxRate; 
+
+
+  const calculateSubtotal = () =>
+  
+    cartItems.reduce(
+      (total, item) => total + (item.totalPrice || ((item.priceByQuantity || item.productId.price) * item.quantity)),
+      0
+    );
+  
   return (
     <div className="payment-container">
-    <div className="order-summary">
-        <h2>Order Summary</h2>
-        {cartItems.map((item) => (
-          <div key={item._id} className="order-item">
-            <p>{item.productId.name}</p>
-            <p>Quantity: {item.quantity}</p>
-            <p>Price: ${item.totalPrice.toFixed(2)}</p>
-          </div>
-        ))}
-        
+ <div className="order-summary">
+  <h2>Order Summary</h2>
+  {cartItems.map((item) => (
+    <div key={item._id} className="order-item">
+      <div className="order-item-left">
+        <img
+          src={`http://localhost:5000${item.productId.image}`}
+          alt={item.productId.name}
+          className="order-item-image"
+        />
       </div>
-     
+      <div className="order-item-middle">
+        <p className="order-item-name">{item.productId.name}</p>
+        <p className="order-item-quantity">Quantity: {item.quantity}</p>
+      </div>
+      <div className="order-item-right">
+        <p className="order-item-price">${item.totalPrice.toFixed(2)}</p>
+      </div>
+    </div>
+  ))}
+
+  <div className="order-summary-totals">
+    <p className="order-subtotal">
+      Subtotal: ${calculateSubtotal().toFixed(2)}
+    </p>
+    <p className="order-tax">
+      HST (13%): ${calculateTax(calculateSubtotal()).toFixed(2)}
+    </p>
+    <p className="order-tip">
+      Tip: ${tip}
+    </p>
+    <h3 className="order-total">Total: ${totalAmount}</h3>
+  </div>
+</div>
       <div className="payment-section">
         <h1>Payment</h1>
-        <div className='order-item'>
-        <h3>Total Amout ${totalAmount.toFixed(2)}</h3>
+     
+        <h3>Total Amout ${totalAmount}</h3>
 
       <form onSubmit={handlePayment}>
         <div className="payment-options">
@@ -165,7 +199,7 @@ const PaymentPage = () => {
         <div className="overlay">
           <div className="popup">
             <h2>⏳ Waiting for Order Confirmation...</h2>
-            <p>Hold tight! The admin is reviewing your order.</p>
+            <p>Hold tight! The pizza store is reviewing your order.</p>
           </div>
         </div>
       )}

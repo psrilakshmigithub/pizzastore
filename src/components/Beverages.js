@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
 import '../styles/Category.css';
 
 const Beverages = () => {
   const [beverages, setBeverages] = useState([]);
   const navigate = useNavigate();
-  const [selectedDrinks, setSelectedDrinks] = useState({}); // Store selected drink quantities as an object
+  // This state stores the quantity for each beverage keyed by its name.
+  const [selectedDrinks, setSelectedDrinks] = useState({});
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
+
   useEffect(() => {
     const fetchBeverages = async () => {
       try {
@@ -22,88 +24,111 @@ const Beverages = () => {
     fetchBeverages();
   }, []);
 
+  // Update the quantity for a specific beverage.
   const handleDrinkSelection = (drinkName, quantity) => {
     setSelectedDrinks((prev) => ({
       ...prev,
-      [drinkName]: quantity, // Update the quantity for the selected drink
+      [drinkName]: quantity,
     }));
   };
 
-  
-  const handleAddToCart = async () => {    
+  // Handles adding an individual beverage to the cart.
+  // If the beverage already exists in the cart, its quantity will be increased.
+  const handleIndividualAddToCart = async (bev) => {
+    const quantity = selectedDrinks[bev.name] ?? 1;
+    if (quantity <= 0) {
+      alert("Please select a quantity greater than 0.");
+      return;
+    }
     try {
-      // Prepare drinks array first
-      const drinks = Object.entries(selectedDrinks)
-        .filter(([_, quantity]) => quantity > 0) // Ensure only drinks with quantity > 0 are included
-        .map(([name, quantity]) => ({
-          name,
-          quantity,
-        }));
-  
-      // Calculate the total price of the beverages
-      const totalPrice = calculateTotalPrice(drinks);
-  
-      const order = {  
-        userId: userId || null,     
-        productId: null, // Beverages may not have a specific productId
-        drinks,
-        totalPrice,
-      };
-  
+      // Guest users: update cart in localStorage.
       if (!userId) {
-        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
-        localCart.push(order);
+        let localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        // Check if the beverage is already in the cart (using its productId)
+        const existingIndex = localCart.findIndex(item => item.productId === bev._id);
+        if (existingIndex !== -1) {
+          // Increase quantity
+          localCart[existingIndex].quantity += quantity;
+          // Update total price (assuming the price per unit remains constant)
+          localCart[existingIndex].totalPrice = (bev.price * localCart[existingIndex].quantity).toFixed(2);
+        } else {
+          // Add new beverage item to cart.
+          const order = {
+            userId: null,
+            productId: bev._id,
+            name: bev.name,
+            quantity,
+            priceByQuantity :bev.price,
+            totalPrice: (bev.price * quantity).toFixed(2),
+          };
+          localCart.push(order);
+        }
         localStorage.setItem('cart', JSON.stringify(localCart));
         alert('Item added to cart.');
-        return;   
+        return;
       }
-  
-      console.log('Order Payload:', order); // Debugging
-      await axios.post('http://localhost:5000/api/cart',  { userId, ...order });
-      alert('Beverages added to cart!');
+
+      // Logged in users: assume the backend will handle merging the same product.
+      // Alternatively, you could retrieve the user's cart and update it accordingly.
+      const order = {
+        userId,
+        productId: bev._id,
+        name: bev.name,
+        quantity,
+        priceByQuantity: bev.price,
+        totalPrice: (bev.price * quantity).toFixed(2),
+      };
+
+      await axios.post('http://localhost:5000/api/cart', order);
+      alert('Beverage added to cart!');
     } catch (error) {
-      console.error('Error adding beverages to cart:', error.message);
-      alert('Failed to add beverages to cart.');
+      console.error('Error adding beverage to cart:', error.message);
+      alert('Failed to add beverage to cart.');
     }
-  };
-  
-
-
-  const calculateTotalPrice = (drinks) => {
-    return drinks.reduce((total, drink) => {
-      const beverage = beverages.find((bev) => bev.name === drink.name);
-      return total + (beverage.price * drink.quantity);
-    }, 0).toFixed(2);
   };
 
   return (
-<div>
-    <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
-    <div className="details-container beverages">
-      <h1 className="details-title">Beverages</h1>
-      <div className="grid-layout">
-        {beverages.map((bev) => (
-          <div key={bev._id} className="item-card">
-            <img src={`http://localhost:5000${bev.image}`} alt={bev.name} className="category-card-image" />
-            <h3 className="beverage-title">{bev.name}</h3>
-            <p className="beverage-price">${bev.price.toFixed(2)}</p>
-            <div className="beverage-quantity">
-              <label htmlFor={`quantity-${bev.name}`}>Quantity:</label>
-              <input
-                id={`quantity-${bev.name}`}
-                type="number"
-                min="0"
-                value={selectedDrinks[bev.name] || 0}
-                onChange={(e) => handleDrinkSelection(bev.name, parseInt(e.target.value, 10))}
-              />
-            </div>
-          </div>
-        ))}
+    <div>
+      <div className="back-btn-wrap">
+        <a href="/" className="back-btn">
+          <i className="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories
+        </a>
       </div>
-      <button className="add-to-cart-btn" onClick={handleAddToCart}>
-        Add to Cart
-      </button>
-    </div></div>
+      <div className="details-container beverages">
+        <h1 className="details-title">Beverages</h1>
+        <div className="grid-layout">
+          {beverages.map((bev) => (
+            <div key={bev._id} className="item-card">
+              <img
+                src={`http://localhost:5000${bev.image}`}
+                alt={bev.name}
+                className="category-card-image"
+              />
+              <h3 className="beverage-title">{bev.name}</h3>
+              <p className="beverage-price">${bev.price.toFixed(2)}</p>
+              <div className="beverage-quantity">
+                <label htmlFor={`quantity-${bev.name}`}>Quantity:</label>
+                <input
+                  id={`quantity-${bev.name}`}
+                  type="number"
+                  min="1"
+                  value={selectedDrinks[bev.name] ?? 1}
+                  onChange={(e) =>
+                    handleDrinkSelection(bev.name, parseInt(e.target.value, 10))
+                  }
+                />
+              </div>
+              <button
+                className="add-to-cart-btn"
+                onClick={() => handleIndividualAddToCart(bev)}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

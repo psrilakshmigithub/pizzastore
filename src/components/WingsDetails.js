@@ -17,6 +17,7 @@ const WingsDetails = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
         setWing(response.data);
+        // Initialize with the first available size and flavor
         setSelectedSize(response.data.details.sizes[0]);
         setSelectedFlavor(response.data.details.wingsFlavors[0]);
       } catch (error) {
@@ -27,28 +28,30 @@ const WingsDetails = () => {
     fetchWingDetails();
   }, [id]);
 
+  // Calculate the total price based on the selected size adjustment and quantity.
   const calculateTotalPrice = () => {
     if (!wing) return 0;
-    return (wing.price * quantity).toFixed(2);
+    const basePrice = wing.price;
+    // Get the additional cost for the selected size from wing.details.sizePrices
+    const sizePriceAdjustment = wing.details.sizePrices[selectedSize] || 0;
+    // The final price is (base price + size adjustment) multiplied by the quantity.
+    return (basePrice + sizePriceAdjustment).toFixed(2) ;
   };
 
   const handleAddToCart = async () => {
-   
-   
-
     try {
-
-      const order = {  
-        userId: userId || null,    
+      const order = {
+        userId: userId || null,
         productId: wing._id,
         size: selectedSize,
         flavor: selectedFlavor,
-        wingsFlavor:selectedFlavor,
+        wingsFlavor: selectedFlavor,
         quantity,
-        totalPrice: calculateTotalPrice(),
+        priceByQuantity: calculateTotalPrice(),
+        totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
       };
 
-      if (!userId) {     
+      if (!userId) {
         // Save to local storage if the user is not logged in
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
         localCart.push(order);
@@ -56,9 +59,9 @@ const WingsDetails = () => {
         alert('Item added to cart.');
         return;
       }
-      console.log('Order payload:', order);
 
-      await axios.post('http://localhost:5000/api/cart',   order );
+      console.log('Order payload:', order);
+      await axios.post('http://localhost:5000/api/cart', order);
       alert('Wing order added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -70,71 +73,81 @@ const WingsDetails = () => {
 
   return (
     <div>
-      <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
-    <div className="details-container">
-    <div className="product-container">
-    <div className="prod-img"><img src={`http://localhost:5000${wing.image}`} alt={wing.name} className="details-image"/></div>
-    <div className="prod-details">
-      <h1 className="details-title">{wing.name}</h1>
-      <p className="details-price">Price: ${wing.price.toFixed(2)}</p>
-    </div>
-    </div>
-      <form className="details-form">
-        <div className="form-wrap">
-        <div className="form-group">
-          <label htmlFor="size">Choose Size:</label>
-          <select
-            id="size"
-            value={selectedSize}
-            onChange={(e) => setSelectedSize(e.target.value)}
+      <div className="back-btn-wrap">
+        <a href="/" className="back-btn">
+          <i className="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories
+        </a>
+      </div>
+      <div className="details-container">
+        <div className="product-container">
+          <div className="prod-img">
+            <img
+              src={`http://localhost:5000${wing.image}`}
+              alt={wing.name}
+              className="details-image"
+            />
+          </div>
+          <div className="prod-details">
+            <h1 className="details-title">{wing.name}</h1>
+            {/* Show the price for the default size (calculated for quantity=1) */}
+            <p className="details-price">Price: ${calculateTotalPrice()}</p>
+          </div>
+        </div>
+        <form className="details-form">
+          <div className="form-wrap">
+            <div className="form-group">
+              <label htmlFor="size">Choose Size:</label>
+              <select
+                id="size"
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+              >
+                {wing.details.sizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size} {wing.details.sizePrices[size] > 0 ? `(+$${wing.details.sizePrices[size].toFixed(2)})` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="flavor">Choose Flavor:</label>
+              <select
+                id="flavor"
+                value={selectedFlavor}
+                onChange={(e) => setSelectedFlavor(e.target.value)}
+              >
+                {wing.details.wingsFlavors.map((flavor) => (
+                  <option key={flavor} value={flavor}>
+                    {flavor}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="quantity">Quantity:</label>
+              <input
+                id="quantity"
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+              />
+            </div>
+          </div>
+          <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
+
+          <button
+            type="button"
+            className="add-to-cart-btn"
+            onClick={handleAddToCart}
           >
-            {wing.details.sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="flavor">Choose Flavor:</label>
-          <select
-            id="flavor"
-            value={selectedFlavor}
-            onChange={(e) => setSelectedFlavor(e.target.value)}
-          >
-            {wing.details.wingsFlavors.map((flavor) => (
-              <option key={flavor} value={flavor}>
-                {flavor}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="quantity">Quantity:</label>
-          <input
-            id="quantity"
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
-          />
-        </div>
-        </div>
-        <p className="details-total">Total Price: ${calculateTotalPrice()}</p>
-
-        <button
-          type="button"
-          className="add-to-cart-btn"
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </button>
-      </form>
+            Add to Cart
+          </button>
+        </form>
+      </div>
     </div>
-    </div>
-
   );
 };
 

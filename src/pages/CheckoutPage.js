@@ -4,25 +4,34 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Checkout.css';
 
 const CheckoutPage = () => {
-  const [deliveryType, setDeliveryType] = useState('pickup'); // Default is pickup
+  // Retrieve order type from localStorage; if not found, default to "pickup"
+  const [deliveryType, setDeliveryType] = useState(
+    localStorage.getItem('orderType') || 'pickup'
+  );
   const [contactInfo, setContactInfo] = useState({ phone: '', address: '' });
   const [scheduledTime, setScheduledTime] = useState('');
   const [instructions, setInstructions] = useState('');
   
- 
   const navigate = useNavigate();
   const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
-  // Fetch user contact info if returning from ManageContacts
+  // Whenever deliveryType changes, update localStorage.
+  useEffect(() => {
+    localStorage.setItem('orderType', deliveryType);
+  }, [deliveryType]);
+
+  // Fetch user contact info if the delivery type is delivery.
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/user/${userId}/default-contact`);
-        console.log(response.data);
         const defaultContact = response.data;
         if (defaultContact) {
-          setContactInfo({ phone: defaultContact.phone, address: defaultContact.address });
+          setContactInfo({
+            phone: defaultContact.phone,
+            address: defaultContact.address,
+          });
         }
       } catch (error) {
         console.error('Error fetching contact info:', error.message);
@@ -54,7 +63,7 @@ const CheckoutPage = () => {
   };
 
   const handleEditContact = () => {
-    // Redirect to ManageContacts with a state to return to Checkout after editing
+    // Navigate to the ManageContacts page so the user can update their contact info.
     navigate('/managecontacts', { state: { fromCheckout: true } });
   };
 
@@ -62,7 +71,7 @@ const CheckoutPage = () => {
     <div className="checkout-container">
       <h1>Checkout</h1>
 
-      {/* Delivery Type */}
+      {/* Delivery Type Selection */}
       <div className="form-group">
         <label>Delivery Type:</label>
         <div className="radio-group">
@@ -89,7 +98,7 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* Contact Information */}
+      {/* Contact Information for Delivery */}
       {deliveryType === 'delivery' && (
         <div className="form-group">
           <label>Contact Information:</label>
@@ -119,7 +128,7 @@ const CheckoutPage = () => {
         />
       </div>
 
-      {/* Instructions */}
+      {/* Special Instructions */}
       <div className="form-group">
         <label>Special Instructions:</label>
         <textarea

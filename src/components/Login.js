@@ -102,14 +102,7 @@ const Login = () => {
             className="google-login-btn"
           />
 
-          {/* <FacebookLogin
-            appId="2071984283236132"
-            autoLoad={false}
-            fields="name,email,picture"
-            callback={handleFacebookResponse}
-            textButton="Login with Facebook"
-            cssClass="facebook-login-btn"
-          /> */}
+       
         </div>
 
         <div className="divider">

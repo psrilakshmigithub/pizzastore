@@ -11,6 +11,7 @@ const MyOrdersPage = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/orders/${userId}`);
         setOrders(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error.message);
       }
@@ -27,23 +28,41 @@ const MyOrdersPage = () => {
       ) : (
         <div className="orders-list">
           {orders.map((order) => (
-            <div key={order._id} className="order-item">
-              <h2>Order ID: {order._id}</h2>
-              <p>Total Price: ${order.totalPrice.toFixed(2)}</p>
-              <p>Status: {order.status}</p>
-              <div className="order-items">
-                {order.items.map((item) => (
-                  <div key={item._id} className="order-item-details">                              
-                    <img src={`http://localhost:5000${item.productId.image}`}
-                     alt={item.productId.name} className="cart-item-image" />
-                    
-                    <div className="item-details">
-                      <p>{item.productId.name}</p>
-                      <p>Quantity: {item.quantity}</p>
-                      <p>Price: ${item.totalPrice.toFixed(2)}</p>
+            <div key={order._id} className="order-card">
+              <div className="order-header">
+                <h2>Order #{order._id}</h2>
+                <span className={`order-status ${order.status.toLowerCase()}`}>
+                  {order.status}
+                </span>
+              </div>
+              <div className="order-body">
+                <div className="order-info">
+                  <p className="order-total">
+                    <strong>Total:</strong> ${order.totalPrice.toFixed(2)}
+                  </p>
+                </div>
+                <div className="order-items">
+                  {order.items.map((item) => (
+                    <div key={item._id} className="order-item-details">
+                      <div className="order-item-left">
+                        <img
+                          src={`http://localhost:5000${item.productId.image}`}
+                          alt={item.productId.name}
+                          className="order-item-image"
+                        />
+                      </div>
+                      <div className="order-item-middle">
+                        <p className="item-name">{item.productId.name}</p>
+                        <p className="item-quantity">Qty: {item.quantity}</p>
+                      </div>
+                      <div className="order-item-right">
+                        <p className="item-price">
+                          ${item.totalPrice.toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           ))}

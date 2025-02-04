@@ -19,6 +19,14 @@ const HomePage = () => {
                 name: 'Beverages', // Override name for a unified card
               });
             }
+          }
+          else if (item.category === 'Sides') {
+            if (!acc.some((i) => i.category === 'Sides')) {
+              acc.push({
+                ...item,
+                name: 'Sides', // Override name for a unified card
+              });
+            }
           } else {
             acc.push(item);
           }
@@ -46,8 +54,7 @@ const HomePage = () => {
                   item.category === 'Beverages'
                     ? `/category/beverages`
                     : `/${item.category.toLowerCase()}/${item._id}`
-                }
-                
+                }               
               >
                 <img
                   src={`http://localhost:5000${item.image}`}

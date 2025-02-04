@@ -76,7 +76,7 @@ const ComboDetails = () => {
     const extraToppingsPrice =
       Math.max(0, selectedToppings.length - combo.details.toppingsPerPizza) * combo.details.extraToppingPrice;
 
-    return ((basePrice + sizePriceAdjustment + extraToppingsPrice) * (quantity)).toFixed(2);
+    return (basePrice + sizePriceAdjustment + extraToppingsPrice).toFixed(2);
   };
   const handleToppingSelection = (topping) => {
     setSelectedToppings((prev) =>
@@ -113,7 +113,8 @@ const ComboDetails = () => {
         drinks: selectedDrinks.map((drink) => ({ name: drink, quantity: 1 })),
         toppings: selectedToppings,
         quantity,
-        totalPrice: calculateTotalPrice(),
+        priceByQuantity: calculateTotalPrice(),
+        totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
       };
 
       if (!userId) {
@@ -153,8 +154,10 @@ const ComboDetails = () => {
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
           <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
-            {combo.details.sizes.map((size) => (
-              <option key={size} value={size}>{size}</option>
+            {combo.details.sizes.map((size) => (           
+              <option key={size} value={size}>
+                    {size} (Additional: ${combo.details.sizePrices[size].toFixed(2)})
+                  </option>
             ))}
           </select>
         </div>
@@ -213,7 +216,7 @@ const ComboDetails = () => {
    <label htmlFor="quantity">Quantity:</label>
           <input type="number" min="1" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
           </div></div>
-        <p className="details-total">Total: ${calculateTotalPrice()}</p>
+        <p className="details-total">Total: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
         <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>Add to Cart</button>
       </form>
     </div></div>

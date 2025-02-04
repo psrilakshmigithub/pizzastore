@@ -85,4 +85,96 @@
   .checkout-btn:hover {
     background-color: #388e3c;
   }
+  .order-summary {
+    background: #fff;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .order-summary h2 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  .order-item-left {
+    flex: 0 0 auto;
+  }
+  
+  .order-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .order-item-middle {
+    flex: 1;
+    padding: 0 1rem;
+  }
+  
+  .order-item-name {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .order-item-quantity {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .order-item-right {
+    flex: 0 0 auto;
+    text-align: right;
+  }
+  
+  .order-item-price {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  /* Order Totals Section */
+  .order-summary-totals {
+    margin-top: 1rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .order-summary-totals p,
+  .order-summary-totals h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .order-total {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
   

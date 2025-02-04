@@ -41,7 +41,7 @@ const PanzerotteDetails = () => {
 
     const extraToppingsPrice = Math.max(0, selectedToppings.length - panzerotte.details.toppingsPerPizza) * panzerotte.details.extraToppingPrice;
 
-    return ((panzerotte.price + extraToppingsPrice) * quantity).toFixed(2);
+    return (panzerotte.price + extraToppingsPrice).toFixed(2);
   };
 
   const handleToppingSelection = (topping) => {
@@ -63,7 +63,8 @@ const PanzerotteDetails = () => {
         flavor: selectedFlavor,
         toppings: selectedToppings,
         quantity,
-        totalPrice: calculateTotalPrice(),
+        priceByQuantity: calculateTotalPrice(),
+        totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
       };
       if (!userId) {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -137,7 +138,7 @@ const PanzerotteDetails = () => {
           />
         </div>
 
-        <p className="details-total">Total Price: ${calculateTotalPrice()}</p>
+        <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
 
         <button type="button" className="add-to-cart-btn" onClick={handleAddToCart}>
           Add to Cart

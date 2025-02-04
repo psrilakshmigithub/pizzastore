@@ -48,7 +48,7 @@ const TwoForOneDetails = () => {
       );
     }, 0);
 
-    return ((deal.price + sizePriceAdjustment + extraToppingsPrice) * quantity).toFixed(2);
+    return (deal.price + sizePriceAdjustment + extraToppingsPrice).toFixed(2);
   };
 
   const handleToppingSelection = (pizzaIndex, topping) => {
@@ -72,7 +72,8 @@ const TwoForOneDetails = () => {
         size: selectedSize,
         toppings: selectedToppings,
         quantity,
-        totalPrice: calculateTotalPrice(),
+        priceByQuantity: calculateTotalPrice(),
+        totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
       };
       if (!userId) {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -145,7 +146,7 @@ const TwoForOneDetails = () => {
           />
         </div>
 
-        <p className="details-total">Total Price: ${calculateTotalPrice()}</p>
+        <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
 
         <button type="button" className="add-to-cart-btn" onClick={handleAddToCart}>
           Add to Cart
