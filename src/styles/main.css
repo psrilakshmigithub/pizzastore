@@ -29,17 +29,40 @@
   }
   
   .form-group select,
-  .form-group input {
-    width: 100%;
+  .form-group input,
+  .form-group textarea {
+    width: calc(100% - 1rem);
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
   }
+  .order-summary h2{
+    margin-bottom: 24px;
+  }
+  .order-summary .order-item{ margin-bottom: 8px;}
 
   .form-group input[type=radio] {
     width:auto;margin-right: 8px;}
 
+.payment-section h1{margin: 24px 0;}
+.payment-section {flex: 1;}
+
+.payment-section form{padding: 24px;}
+.payment-section .payment-options{margin-bottom: 16px;}
+.payment-section .payment-options label{
+  padding: 8px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgb(228 231 235);
+  display: inline-block;
+  margin-right: 24px;}
+
+  .payment-section .payment-options label input{margin-right: 8px;}
+ 
+
+  .card-input iframe{height: 24px;}
+  .card-input iframe .CardField-number{background: #f00 !important;}
 /* 
   
   .form-group label {

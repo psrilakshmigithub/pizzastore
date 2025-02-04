@@ -192,7 +192,8 @@ const Cart = () => {
     <div className="cart-wrap"><div className="cart-container details-container">
       <h1>Cart</h1>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <><i class="fa-solid fa-cart-shopping"></i><p>Your cart is empty.</p></>
+        
       ) : (
         <>
           {cartItems.map((item) => (
@@ -228,7 +229,7 @@ const Cart = () => {
             <h2>Order Summary</h2>
             <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
             <p>HST (13%): ${calculateTax(calculateSubtotal()).toFixed(2)}</p>
-            <div className="tip-selection">
+            <div className="tip-selection form-group">
               <label htmlFor="tip">Tip:</label>
               <select
                 id="tip"

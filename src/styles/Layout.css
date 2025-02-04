@@ -7,15 +7,16 @@
 }
 
 .navbar {
-  background-color:#a9091a;
+  /* background-color:#a9091a; */
+  background: rgb(255,251,240);
+  background: linear-gradient(90deg, rgba(255,251,240,1) 0%, rgba(227,176,24,1) 30%, rgba(169,9,26,1) 60%, rgba(169,9,26,1) 100%);
   color: white;
- 
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
 }
-
+.logo img{height: 58px;}
 .nav-links ul {
   list-style: none;
   display: flex;
@@ -112,9 +113,11 @@
   font-size: 3rem;
   margin-bottom: 1rem;
   display: inline-block;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
   padding: 8px 16px;
+  box-shadow: 0px 0px 24px rgb(255 177 0);
+  border: 1px solid rgb(161 47 47);
 }
 
 .main-banner p {

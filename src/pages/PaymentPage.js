@@ -124,12 +124,13 @@ const PaymentPage = () => {
             <p>Price: ${item.totalPrice.toFixed(2)}</p>
           </div>
         ))}
-        <h3>Total: ${totalAmount.toFixed(2)}</h3>
+        
       </div>
      
       <div className="payment-section">
         <h1>Payment</h1>
-        <p>Total Amount: ${totalAmount.toFixed(2)}</p>
+        <div className='order-item'>
+        <h3>Total Amout ${totalAmount.toFixed(2)}</h3>
 
       <form onSubmit={handlePayment}>
         <div className="payment-options">

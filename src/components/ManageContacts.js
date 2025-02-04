@@ -193,49 +193,47 @@ const ManageContacts = () => {
               <div key={contact._id} className="contact-card">
                 {editingContact && editingContact._id === contact._id ? (
                   <>
-                    <input
-                      type="text"
-                      placeholder="Phone"
-                      value={editingContact.phone}
-                      onChange={(e) => setEditingContact((prev) => ({ ...prev, phone: e.target.value }))}
-                    />
-                    <Autocomplete
-                      onLoad={(autocomplete) => (editingContact.autocomplete = autocomplete)}
-                      onPlaceChanged={() => handlePlaceSelect(editingContact.autocomplete, true)}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Delivery Address"
-                        value={editingContact.address}
-                        onChange={(e) =>
-                          setEditingContact((prev) => ({ ...prev, address: e.target.value }))
-                        }
-                      />
+
+        <div className="form-group">
+          <label>Phone No</label>
+          <div>
+              <input type="text" placeholder="Phone" value={editingContact.phone} onChange={(e) => setEditingContact((prev) => ({ ...prev, phone: e.target.value }))} />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Address</label>
+          
+          <Autocomplete  onLoad={(autocomplete) => (editingContact.autocomplete = autocomplete)} onPlaceChanged={() => handlePlaceSelect(editingContact.autocomplete, true)} >
+                    <input type="text" placeholder="Delivery Address" value={editingContact.address} onChange={(e) => setEditingContact((prev) => ({ ...prev, address: e.target.value })) } />
                     </Autocomplete>
+          
+        </div>
                     <button onClick={() => handleEditContact(contact._id)}>Save</button>
                     <button onClick={() => setEditingContact(null)}>Cancel</button>
                   </>
                 ) : (
                   <>
-                    <p>Phone: {contact.phone}</p>
-                    <p>Address: {contact.address}</p>
+                    <p><i class="fa-solid fa-mobile-screen-button"></i> Phone: {contact.phone}</p>
+                    <p><i class="fa-solid fa-location-dot"></i> Address: {contact.address}</p>
                     <label>
                       <input
                         type="radio"
                         name="defaultContact"
                         checked={contact.isDefault}
                         onChange={() => handleSetDefault(contact._id)}
-                      />
-                      Default
+                      /> Default
                     </label>
+                    <div className="contact-cta">
                     <button onClick={() => setEditingContact(contact)}>Edit</button>
-                    <button onClick={() => handleDeleteContact(contact._id)}>Delete</button>
+                    <button className='delete' onClick={() => handleDeleteContact(contact._id)}>Delete</button>
+                    </div>
                   </>
                 )}
               </div>
             ))}
             <button onClick={() => setIsAdding(true)} className="add-contact-btn">
-              Add New Contact
+            <i class="fa-solid fa-plus"></i> <br></br> Add New Contact
             </button>
           </div>
         )}
