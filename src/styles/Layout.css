@@ -302,3 +302,14 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.store-closed-message{
+
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+}
+

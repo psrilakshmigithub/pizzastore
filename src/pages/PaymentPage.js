@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../styles/Payment.css';
 
-const PaymentPage = () => {
+const PaymentPage = ({ storeOpen }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -18,7 +18,8 @@ const PaymentPage = () => {
   const [paymentOption, setPaymentOption] = useState("online");
   const [isWaitingForConfirmation, setIsWaitingForConfirmation] = useState(false);
   const [orderId, setOrderId] = useState(null);
-
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [deliveryType, setDeliveryType] = useState(''); 
   const userId = JSON.parse(localStorage.getItem("user"))?._id;
   const eventSourceRef = useRef(null);
 
@@ -31,6 +32,8 @@ const PaymentPage = () => {
         setTotalAmount(cart.totalPrice);
         setTip(cart.tip);
         setCartItems(cart.items);
+        setDeliveryFee(cart.deliveryFee);
+        setDeliveryType(cart.deliveryType);
 
         const paymentIntentResponse = await axios.post("http://localhost:5000/api/payment/create-payment-intent", {
           amount: cart.totalPrice * 100,
@@ -158,6 +161,11 @@ const PaymentPage = () => {
     <p className="order-tip">
       Tip: ${tip}
     </p>
+    {deliveryType === 'delivery' && deliveryFee > 0 && (
+            <p className="order-delivery-fee">
+              Delivery Fee: ${deliveryFee.toFixed(2)}
+            </p>
+          )}
     <h3 className="order-total">Total: ${totalAmount}</h3>
   </div>
 </div>

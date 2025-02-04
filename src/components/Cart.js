@@ -7,9 +7,9 @@ import '../styles/Cart.css'; // Ensure the CSS file exists
 const generateUniqueId = () =>
   `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-const Cart = () => {
+const Cart = ({ storeOpen }) => {
   const [cartItems, setCartItems] = useState([]); // Initialize as an array
-  const [tipPercentage, setTipPercentage] = useState(0); 
+  const [tipPercentage, setTipPercentage] = useState(10); 
   const [taxRate] = useState(0.13); // Example: 13% tax
   const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
@@ -188,6 +188,8 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     try {
+      if (!storeOpen) return; // Prevent checkout when store is closed
+
       if (!userId) {
         navigate('/login', { state: { from: '/cart' } });
       } else {     
@@ -223,6 +225,11 @@ const Cart = () => {
     <div className="cart-wrap">
       <div className="cart-container details-container">
         <h1>Cart</h1>
+        {!storeOpen && (
+          <div className="store-closed-message">
+           <h1><p >⚠️ The store is currently closed. Orders cannot be placed.</p></h1> 
+          </div>
+        )}
         {cartItems.length === 0 ? (
           <>
             <i className="fa-solid fa-cart-shopping"></i>
@@ -286,8 +293,9 @@ const Cart = () => {
 
               </div>
               <h3>Total: ${calculateTotal()}</h3>
-              <button className="checkout-btn" onClick={handleCheckout}>
-                Proceed to Checkout
+              
+              <button className="checkout-btn" onClick={handleCheckout} disabled={!storeOpen}>
+                {storeOpen ? "Proceed to Checkout" : "Store Closed"}
               </button>
             </div>
           </>

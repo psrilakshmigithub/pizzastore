@@ -23,4 +23,11 @@
   .category-card-title {
     @apply text-lg font-medium text-gray-700;
   }
+  .store-closed-banner {
+    @apply bg-red-500 text-white p-4 text-center;
+  }
+
+   
+
+
   
