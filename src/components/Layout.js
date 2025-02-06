@@ -118,12 +118,12 @@ const Layout = () => {
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
     <LoadScript googleMapsApiKey="AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg" libraries={libraries}>
       <div className="layout">
-        <div className="store_time">
-        <img alt="" src="http://localhost:3000/static/media/Time.png"/>
+        {/* <div className="store_time">
+        <img alt="" src="/static/media/Time.png"/>
           Hours of Operation:
 Sunday - Wednesday: 11:00 - 23:00
 Thursday: 11:00 - 00:00
-Friday - Saturday: 11:00 - 01:00</div>
+Friday - Saturday: 11:00 - 01:00</div> */}
         {/* Navbar */}
         <header className="navbar">
           <div className="logo">
@@ -201,9 +201,9 @@ Friday - Saturday: 11:00 - 01:00</div>
           </nav>
           </div>
         </header>
-        <div className="topheader">
-        <i class="fa-solid fa-location-dot"></i> 159 Fife Rd, Guelph, ON N1H 7N8, Canada. &nbsp; <i class="fa-solid fa-phone"></i> Tel: +1 519-836-1818
-        </div>
+        {/* <div className="topheader">
+        <i class="fa-solid fa-location-dot"></i> 159 Fife Rd, Guelph, ON N1H 7N8, Canada. &nbsp; <i class="fa-solid fa-phone"></i> Tel: +1(519)836-1818
+        </div> */}
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
