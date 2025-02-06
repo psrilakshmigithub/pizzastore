@@ -6,7 +6,8 @@ import '../styles/Layout.css';
 import '../styles/main.css';
 import '../styles/ContactManagement.css';
 import logo from '../images/pizza-logo.png';
-
+import sidebarImg from '../images/superdeal.png';
+import time from '../images/Time.png';
 const libraries = ['places'];
 
 const Layout = () => {
@@ -117,6 +118,15 @@ const Layout = () => {
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} libraries={libraries}>
       <div className="layout">
+        <div className="store_time">
+        <img src={time} alt="Jumbo 3 for 1 Pizza and Wings" />
+          <div>
+          <h4>Hours of Operation</h4>
+            <p>11:00 - 23:00 Sunday to Wednesday</p>
+            <p>11:00 - 00:00 Thursday</p>
+            <p>11:00 - 01:00 Friday & Saturday</p>
+          </div>
+        </div>
         {/* Navbar */}
         <header className="navbar">
           <div className="logo">
@@ -124,7 +134,8 @@ const Layout = () => {
               <img src={logo} alt="Jumbo 3 for 1 Pizza and Wings" />
             </Link>
           </div>
-          <ul style={{ display: 'flex', listStyle: 'none', padding: 0, margin: 0 }}>
+          <div className="hdr-rightsection">
+          <ul className="pickdel-info">
             {orderType && (
               <li className="order-type-display">
                 <span>
@@ -134,7 +145,7 @@ const Layout = () => {
                     </p>
                   ) : (
                     <p>
-                      <i className="fa-solid fa-truck-pickup" aria-hidden="true"></i> Pickup :159 Fife Rd,Guelph, ON N1H 7N8
+                      <i className="fa-solid fa-truck-pickup" aria-hidden="true"></i> Pickup 159 Fife Rd,Guelph, ON N1H 7N8
                     </p>
                   )}
                 </span>
@@ -191,13 +202,22 @@ const Layout = () => {
               </li>
             </ul>
           </nav>
+          </div>
         </header>
-
+        {/* <div className="topheader">
+        <i class="fa-solid fa-location-dot"></i> 159 Fife Rd, Guelph, ON N1H 7N8, Canada. &nbsp; <i class="fa-solid fa-phone"></i> Tel: +1(519)836-1818
+        </div> */}
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
-            <h1>Welcome to Jumbo 3 for 1 Pizza and Wings</h1>
-            <p>Your one-stop destination for delicious pizzas, combos, and more!</p>
+            <button>Order Now</button>
+            {/* <h2>Welcome to Jumbo 3 for 1 Pizza and Wings</h2>
+            <h2>+1(519)836-1818</h2>
+            <h3> Address : 159 Fife Road, Guelph </h3><br></br>
+            <h3>Sunday - Wednesday opens 11:00 - 11:00</h3>
+            <h3>Thursday - Saturday opens 11:00 - 01:00</h3>
+          
+           */}
           </div>
 
           <div className="content-section">
@@ -205,7 +225,7 @@ const Layout = () => {
               <Outlet />
             </main>
             <aside className="sidebar">
-              <div className="store-info">
+              {/* <div className="store-info">
                 <h2>Store Information</h2>
                 <p>
                   <i className="fa fa-map-marker" aria-hidden="true"></i> <strong>Address:</strong>
@@ -224,20 +244,23 @@ const Layout = () => {
                 <p>
                   <i className="fa fa-envelope" aria-hidden="true"></i> <strong>Email:</strong> service@jumbo3for1pizza.ca
                 </p>
-              </div>
+              </div> */}
               <div className="special-offers">
                 <h2>Special Offers</h2>
-                <ul>
-                  <li>Buy 1 Get 1 Free on Large Pizzas</li>
-                  <li>Free Garlic Bread with Every Combo</li>
-                  <li>Discounted Beverages with Family Deals</li>
-                </ul>
+                <h3>Super Bowl Super Combo</h3>
+                <img src={sidebarImg}></img>
+                <button className="ordernow" Link>Order Now </button>
               </div>
             </aside>
           </div>
         </div>
 
         <footer className="footer">
+          <div className='h-footer'>
+          <img src={logo} alt="Jumbo 3 for 1 Pizza and Wings" />
+          </div>
+       
+        
           <p>&copy; 2025 Pizza Store. All rights reserved.</p>
         </footer>
 
