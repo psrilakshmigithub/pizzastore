@@ -10,6 +10,7 @@ const ThreeForOneDetails = () => {
   const [selectedToppings, setSelectedToppings] = useState([[], [],[]]); // Toppings for each pizza
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
   useEffect(() => {
@@ -31,9 +32,25 @@ const ThreeForOneDetails = () => {
         console.error('Error fetching toppings:', error);
       }
     };
+    const fetchCartItems = async () => {
+      if (userId) {
+        // Fetch cart items from the backend for logged-in users
+        try {
+          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          setCartItems(response.data);
+        } catch (error) {
+          console.error('Error fetching cart items:', error);
+        }
+      } else {
+        // Fetch cart items from localStorage for non-logged-in users
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(localCart);
+      }
+    };
 
     fetchDealDetails();
     fetchToppings();
+    fetchCartItems(); 
   }, [id]);
 
   const calculateTotalPrice = () => {
@@ -80,17 +97,21 @@ const ThreeForOneDetails = () => {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
         localCart.push(order);
         localStorage.setItem('cart', JSON.stringify(localCart));
+        setCartItems(localCart); 
         alert('Item added to cart.');
         return;   
       }
       await axios.post('http://localhost:5000/api/cart',  { userId, ...order });
+      setCartItems((prev) => [...prev, order]); 
       alert('Two-for-One Deal added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
       alert('Failed to add to cart.');
     }
   };
-
+  const handleGoToCart = () => {
+    navigate('/cart'); // Navigate to the cart page
+  };
   if (!deal) return <div className="loading">Loading deal details...</div>;
 
   return (
@@ -166,9 +187,14 @@ const ThreeForOneDetails = () => {
 
         <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
 
-        <button type="button" className="add-to-cart-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
+        <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
+            {cartItems.length > 0 && ( // Show "Go to Cart" button if there are items in the cart
+              <button className="go-to-cart-btn" type="button" onClick={handleGoToCart}>
+                Go to Cart
+              </button>
+            )}
       </form>
       </div>
   </div>

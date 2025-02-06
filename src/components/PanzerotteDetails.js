@@ -11,6 +11,8 @@ const PanzerotteDetails = () => {
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [selectedFlavor, setSelectedFlavor] = useState('');
   const [quantity, setQuantity] = useState(1);
+   const [cartItems, setCartItems] = useState([]); // State to track cart items
+  
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
   useEffect(() => {
     const fetchPanzerotteDetails = async () => {
@@ -31,7 +33,22 @@ const PanzerotteDetails = () => {
         console.error('Error fetching toppings:', error);
       }
     };
-
+    const fetchCartItems = async () => {
+      if (userId) {
+        // Fetch cart items from the backend for logged-in users
+        try {
+          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          setCartItems(response.data);
+        } catch (error) {
+          console.error('Error fetching cart items:', error);
+        }
+      } else {
+        // Fetch cart items from localStorage for non-logged-in users
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(localCart);
+      }
+    };
+    fetchCartItems();
     fetchPanzerotteDetails();
     fetchToppings();
   }, [id]);
@@ -54,6 +71,10 @@ const PanzerotteDetails = () => {
     });
   };
 
+  const handleGoToCart = () => {
+    navigate('/cart'); // Navigate to the cart page
+  };
+
   const handleAddToCart = async () => {
    
     try {
@@ -70,10 +91,12 @@ const PanzerotteDetails = () => {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
           localCart.push(order);
           localStorage.setItem('cart', JSON.stringify(localCart));
+          setCartItems(localCart);
           alert('Item added to cart.');
           return;   
       }
       await axios.post('http://localhost:5000/api/cart',  order );
+      setCartItems((prev) => [...prev, order]); 
       alert('Panzerotte added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -152,9 +175,14 @@ const PanzerotteDetails = () => {
 
         <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
 
-        <button type="button" className="add-to-cart-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
+        <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
+            {cartItems.length > 0 && ( // Show "Go to Cart" button if there are items in the cart
+              <button className="go-to-cart-btn" type="button" onClick={handleGoToCart}>
+                Go to Cart
+              </button>
+            )}
       </form>
       </div>
   </div>

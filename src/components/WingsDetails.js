@@ -10,6 +10,7 @@ const WingsDetails = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedFlavor, setSelectedFlavor] = useState('');
   const [quantity, setQuantity] = useState(1);
+   const [cartItems, setCartItems] = useState([]);
   const userId = JSON.parse(localStorage.getItem('user'))?._id; // Retrieve the user ID from local storage
 
   useEffect(() => {
@@ -24,7 +25,22 @@ const WingsDetails = () => {
         console.error('Error fetching wing details:', error);
       }
     };
-
+    const fetchCartItems = async () => {
+      if (userId) {
+        // Fetch cart items from the backend for logged-in users
+        try {
+          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          setCartItems(response.data);
+        } catch (error) {
+          console.error('Error fetching cart items:', error);
+        }
+      } else {
+        // Fetch cart items from localStorage for non-logged-in users
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(localCart);
+      }
+    };
+    fetchCartItems(); 
     fetchWingDetails();
   }, [id]);
 
@@ -57,12 +73,14 @@ const WingsDetails = () => {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
         localCart.push(order);
         localStorage.setItem('cart', JSON.stringify(localCart));
+        setCartItems(localCart);
         alert('Item added to cart.');
         return;
       }
 
       console.log('Order payload:', order);
       await axios.post('http://localhost:5000/api/cart', order);
+      setCartItems((prev) => [...prev, order]); 
       alert('Wing order added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -70,6 +88,9 @@ const WingsDetails = () => {
     }
   };
 
+  const handleGoToCart = () => {
+    navigate('/cart'); // Navigate to the cart page
+  };
   if (!wing) return <div>Loading...</div>;
 
   return (
@@ -148,13 +169,14 @@ const WingsDetails = () => {
           </div>
           <p className="details-total">Total Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
 
-          <button
-            type="button"
-            className="add-to-cart-btn"
-            onClick={handleAddToCart}
-          >
-            Add to Cart
-          </button>
+          <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
+            {cartItems.length > 0 && ( // Show "Go to Cart" button if there are items in the cart
+              <button className="go-to-cart-btn" type="button" onClick={handleGoToCart}>
+                Go to Cart
+              </button>
+            )}
         </form>
         </div>
       </div>

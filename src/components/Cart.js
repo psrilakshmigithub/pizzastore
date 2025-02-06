@@ -222,7 +222,13 @@ const Cart = ({ storeOpen }) => {
   };
 
   return (
+    
     <div className="cart-wrap">
+    <div className="back-btn-wrap">
+        <a href="/" className="back-btn">
+          <i className="fa fa-chevron-left" aria-hidden="true"></i> 
+        </a>
+      </div>
       <div className="cart-container details-container">
         <h1>Cart</h1>
         {!storeOpen && (
