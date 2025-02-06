@@ -196,7 +196,7 @@ const Layout = () => {
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
-            <h1>Welcome to Jumbo 3 for 1 Pizza Store</h1>
+            <h1>Welcome to Jumbo 3 for 1 Pizza and Wings</h1>
             <p>Your one-stop destination for delicious pizzas, combos, and more!</p>
           </div>
 

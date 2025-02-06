@@ -58,9 +58,15 @@ const PaymentPage = ({ storeOpen }) => {
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-
-      if (data.type === "order-confirmed" && data.orderId === orderId) {
-        alert("✅ Your order has been confirmed!");
+      console.log("SSE Data:", data);
+      if (data.type === "order-accepted") {
+        alert(`✅ Your order has been confirmed! It is now being prepared and will be ready in approximately ${data.time} minutes. Thank you for choosing us!`);
+        setIsWaitingForConfirmation(false);
+        navigate("/my-orders");
+        eventSource.close();
+      }
+      if (data.type === "order-declined") {
+        alert(`⚠️ Your order has been declined as the store is currently ${data.reason}}. Please try again later or contact the store for more details. We apologize for the inconvenience.`);
         setIsWaitingForConfirmation(false);
         navigate("/my-orders");
         eventSource.close();
@@ -207,7 +213,9 @@ const PaymentPage = ({ storeOpen }) => {
         <div className="overlay">
           <div className="popup">
             <h2>⏳ Waiting for Order Confirmation...</h2>
-            <p>Hold tight! The pizza store is reviewing your order.</p>
+            <p>We are now waiting for the store to confirm your order.</p>
+            <p>⏳ Please do not refresh or close this page.</p>
+            <p>📞 If it takes too long, kindly contact the store for assistance. (519) 836-1818</p>
           </div>
         </div>
       )}

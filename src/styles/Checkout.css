@@ -36,3 +36,53 @@
     background-color: #218838;
   }
   
+  /* Styling for the phone number input when required for pickup */
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-group input[type="text"]:focus {
+  border-color: #007bff;
+}
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.save-phone-btn {
+  background-color: #28a745; /* Green */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancel-edit-btn {
+  background-color: #dc3545; /* Red */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.edit-phone-btn {
+  background-color: #007bff; /* Blue */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.save-phone-btn:hover,
+.cancel-edit-btn:hover,
+.edit-phone-btn:hover {
+  opacity: 0.8;
+}

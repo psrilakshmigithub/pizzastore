@@ -14,6 +14,7 @@ const ManageContacts = () => {
   const [loading, setLoading] = useState(true); // Add a loading state
   const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
+  const [cartItems, setCartItems] = useState([]); // Track cart items
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -26,6 +27,10 @@ const ManageContacts = () => {
         setLoading(false); // Set loading to false even if there's an error
       }
     };
+
+    // Fetch contacts and cart items (assume cart items are stored in localStorage or fetched from API)
+    const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItems(cartData); // If using API, replace this with a proper call.
 
     fetchContacts();
   }, [userId]);
@@ -139,116 +144,163 @@ const ManageContacts = () => {
         </button>
       )}
 
+      {/* Show buttons */}
+
+      <div className="action-buttons">
+  {/* Always show the Home button */}
+  <div >
+    <a href="/" className="back-btn">
+      <i className="fa fa-chevron-left" aria-hidden="true"></i> Home
+    </a>
+  </div>
+
+ 
+    <div className="checkout-btn-wrap">
+      <a href="/cart" className="checkout-btn">
+        <i className="fa fa-shopping-cart" aria-hidden="true"></i> Proceed to Cart
+      </a>
+    </div>
+  
+</div>
+
+
       {/* Add Contact Form */}
-      {isAdding && (
-        <div className="add-contact">
-          <h2>Add Contact Details</h2>
+     {/* Add Contact Form */}
+{isAdding && (
+  <div className="add-contact">
+    <h2>Add Contact Details</h2>
 
-          <div className="form-group">
-            <label htmlFor="toppings">Phone No</label>
-            <div>
-              <input
-                type="text"
-                placeholder="Enter Phone"
-                value={newContact.phone}
-                onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
-              />
-            </div>
-          </div>
+    {/* Phone Number Input */}
+    <div className="form-group">
+      <label htmlFor="phone">Phone No</label>
+      <div>
+        <input
+          type="text"
+          placeholder="Enter Phone"
+          value={newContact.phone}
+          onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
+        />
+      </div>
+    </div>
 
-          <div className="form-group">
-            <label htmlFor="toppings">Address</label>
-            <Autocomplete
-              onLoad={(autocomplete) => (newContact.autocomplete = autocomplete)}
-              onPlaceChanged={() => handlePlaceSelect(newContact.autocomplete)}
-            >
-              <input
-                type="text"
-                placeholder="Type Delivery Address"
-                value={newContact.address}
-                onChange={(e) => setNewContact({ ...newContact, address: e.target.value })}
-              />
-            </Autocomplete>
-          </div>
+    {/* Address Input with Google Autocomplete */}
+    <div className="form-group">
+      <label htmlFor="address">Address</label>
+      <Autocomplete
+        onLoad={(autocomplete) => (newContact.autocomplete = autocomplete)}
+        onPlaceChanged={() => handlePlaceSelect(newContact.autocomplete)}
+      >
+        <input
+          type="text"
+          placeholder="Type Delivery Address"
+          value={newContact.address}
+          onChange={(e) => setNewContact({ ...newContact, address: e.target.value })}
+        />
+      </Autocomplete>
+    </div>
 
-          <div className="form-group">
-            <label>
-              <input
-                type="radio"
-                name="isDefault"
-                checked={newContact.isDefault}
-                onChange={() => setNewContact({ ...newContact, isDefault: true })}
-              />
-              Set as Default
-            </label>
-          </div>
+    {/* Default Contact Checkbox */}
+    <div className="form-group">
+      <label>
+        <input
+          type="checkbox"
+          checked={newContact.isDefault}
+          onChange={() => setNewContact({ ...newContact, isDefault: !newContact.isDefault })}
+        />
+        Set as Default
+      </label>
+    </div>
 
-          <button onClick={handleAddContact}>Save</button>
-          <button onClick={() => setIsAdding(false)}>Cancel</button>
-        </div>
-      )}
+    {/* Save & Cancel Buttons */}
+    <button onClick={handleAddContact}>Save</button>
+    <button onClick={() => setIsAdding(false)}>Cancel</button>
+  </div>
+)}
 
       {/* Existing Contacts */}
-      {contacts.length > 0 && (
-        <div className="add-contact">
-          {contacts.map((contact) => (
-            <div key={contact._id} className="contact-card">
-              {editingContact && editingContact._id === contact._id ? (
-                <>
-                  <div className="form-group">
-                    <label>Phone No</label>
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Phone"
-                        value={editingContact.phone}
-                        onChange={(e) => setEditingContact((prev) => ({ ...prev, phone: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Address</label>
-                    <Autocomplete
-                      onLoad={(autocomplete) => (editingContact.autocomplete = autocomplete)}
-                      onPlaceChanged={() => handlePlaceSelect(editingContact.autocomplete, true)}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Delivery Address"
-                        value={editingContact.address}
-                        onChange={(e) => setEditingContact((prev) => ({ ...prev, address: e.target.value }))}
-                      />
-                    </Autocomplete>
-                  </div>
-                  <button onClick={() => handleEditContact(contact._id)}>Save</button>
-                  <button onClick={() => setEditingContact(null)}>Cancel</button>
-                </>
-              ) : (
-                <>
-                  <p><i className="fa-solid fa-mobile-screen-button"></i> Phone: {contact.phone}</p>
-                  <p><i className="fa-solid fa-location-dot"></i> Address: {contact.address}</p>
-                  <label>
-                    <input
-                      type="radio"
-                      name="defaultContact"
-                      checked={contact.isDefault}
-                      onChange={() => handleSetDefault(contact._id)}
-                    /> Default
-                  </label>
-                  <div className="contact-cta">
-                    <button onClick={() => setEditingContact(contact)}>Edit</button>
-                    <button className="delete" onClick={() => handleDeleteContact(contact._id)}>Delete</button>
-                  </div>
-                </>
-              )}
+{/* Existing Contacts */}
+{contacts.length > 0 && (
+  <div className="add-contact">
+    {contacts.map((contact) => (
+      <div key={contact._id} className="contact-card">
+        {editingContact && editingContact._id === contact._id ? (
+          <>
+            <div className="form-group">
+              <label>Phone No</label>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  value={editingContact.phone}
+                  onChange={(e) =>
+                    setEditingContact((prev) => ({ ...prev, phone: e.target.value }))
+                  }
+                />
+              </div>
             </div>
-          ))}
-          <button onClick={() => setIsAdding(true)} className="add-contact-btn">
-            <i className="fa-solid fa-plus"></i> <br /> Add New Contact
-          </button>
-        </div>
-      )}
+
+            <div className="form-group">
+              <label>Address</label>
+              <Autocomplete
+                onLoad={(autocomplete) => (editingContact.autocomplete = autocomplete)}
+                onPlaceChanged={() => handlePlaceSelect(editingContact.autocomplete, true)}
+              >
+                <input
+                  type="text"
+                  placeholder="Delivery Address"
+                  value={editingContact.address}
+                  onChange={(e) =>
+                    setEditingContact((prev) => ({ ...prev, address: e.target.value }))
+                  }
+                />
+              </Autocomplete>
+            </div>
+
+            {/* Default Contact Checkbox */}
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={editingContact.isDefault}
+                  onChange={() =>
+                    setEditingContact((prev) => ({ ...prev, isDefault: !prev.isDefault }))
+                  }
+                />
+                Set as Default
+              </label>
+            </div>
+
+            <button onClick={() => handleEditContact(contact._id)}>Save</button>
+            <button onClick={() => setEditingContact(null)}>Cancel</button>
+          </>
+        ) : (
+          <>
+            <p><i className="fa-solid fa-mobile-screen-button"></i> Phone: {contact.phone}</p>
+            <p><i className="fa-solid fa-location-dot"></i> Address: {contact.address}</p>
+
+            {/* Default Contact Checkbox */}
+            <label>
+              <input
+                type="checkbox"
+                checked={contact.isDefault}
+                onChange={() => handleSetDefault(contact._id)}
+              /> Default
+            </label>
+
+            <div className="contact-cta">
+              <button onClick={() => setEditingContact(contact)}>Edit</button>
+              <button className="delete" onClick={() => handleDeleteContact(contact._id)}>Delete</button>
+            </div>
+          </>
+        )}
+      </div>
+    ))}
+    
+    <button onClick={() => setIsAdding(true)} className="add-contact-btn">
+      <i className="fa-solid fa-plus"></i> <br /> Add New Contact
+    </button>
+  </div>
+)}
     </div>
   );
 };

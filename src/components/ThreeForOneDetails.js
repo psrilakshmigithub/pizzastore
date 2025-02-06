@@ -74,6 +74,7 @@ const ThreeForOneDetails = () => {
         quantity,
         priceByQuantity: calculateTotalPrice(),
         totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
+        description: deal.description,
       };
       if (!userId) {
         const localCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -98,15 +99,29 @@ const ThreeForOneDetails = () => {
 <div>
     <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
   <div className="details-container">
-    <div className="product-container">
-    <div className="prod-img">
-    <img src={`http://localhost:5000${deal.image}`} alt={deal.name} className="details-image" />
+  <div className="product-container">
+  {/* Image Section */}
+  <div className="prod-img">
+    <img 
+      src={`http://localhost:5000${deal.image}`} 
+      alt={deal.name} 
+    />
+  </div>
+
+  {/* Details Section */}
+  <div className="prod-details">
+    <h1>{deal.name}</h1>
+    <p className="details-price"> Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
+
+    {/* Description Box */}
+    <div className="description-box">
+      <h3>📌 What's Included?</h3>
+      <p>{deal.description}</p>
     </div>
-    <div className="prod-details">
-    <h1 className="details-title">{deal.name}</h1>
-    <p className="details-price">Base Price: ${deal.price.toFixed(2)}</p>
-    </div>
-    </div>
+  </div>
+</div>
+ 
+    <div className="form-container">
     <form className="details-form">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
@@ -155,6 +170,7 @@ const ThreeForOneDetails = () => {
           Add to Cart
         </button>
       </form>
+      </div>
   </div>
   </div>
 

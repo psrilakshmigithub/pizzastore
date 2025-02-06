@@ -74,3 +74,63 @@ margin-top: 24px;
     background: #0056b3;
   }
   
+  /* Container for the action buttons */
+.action-buttons {
+  display: flex;
+  justify-content: space-between; /* Align buttons to either end */
+  margin-top: 20px; /* Add space from the form above */
+  padding: 10px;
+  width: 100%; /* Ensure buttons stretch across the container */
+}
+
+/* Style for the back button (Home) */
+.back-btn-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+.back-btn i {
+  margin-right: 8px;
+}
+
+/* Style for the checkout button */
+.checkout-btn-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.checkout-btn {
+  display: flex;
+  align-items: center;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #218838;
+}
+
+.checkout-btn i {
+  margin-right: 8px;
+}

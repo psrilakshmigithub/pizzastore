@@ -33,10 +33,11 @@ const SuperBowlWingsDetails = () => {
         userId: userId || null,
         productId: combo._id,
         wingsFlavor: selectedFlavor,
-        side: selectedSide,
+        sides: [selectedSide],
         quantity: 1, // Fixed quantity for the deal
         priceByQuantity: combo.price,
         totalPrice: combo.price,
+        description: combo.description
       };
 
       if (!userId) {
@@ -67,19 +68,28 @@ const SuperBowlWingsDetails = () => {
         </a>
       </div>
       <div className="details-container">
-        <div className="product-container">
-          <div className="prod-img">
-            <img
-              src={`http://localhost:5000${combo.image}`}
-              alt={combo.name}
-              className="details-image"
-            />
-          </div>
-          <div className="prod-details">
-            <h1 className="details-title">{combo.name}</h1>
-            <p className="details-price">Price: ${combo.price.toFixed(2)}</p>
-          </div>
-        </div>
+      <div className="product-container">
+      {/* Image Section */}
+  <div className="prod-img">
+    <img 
+      src={`http://localhost:5000${combo.image}`} 
+      alt={combo.name} 
+    />
+  </div>
+
+  {/* Details Section */}
+  <div className="prod-details">
+    <h1>{combo.name}</h1>
+    <p className="details-price"> Price: ${combo.price.toFixed(2)}</p>
+
+    {/* Description Box */}
+    <div className="description-box">
+      <h3>📌 What's Included?</h3>
+      <p>{combo.description}</p>
+    </div>
+</div>
+</div>
+<div className="form-container">
         <form className="details-form">
           <div className="form-wrap">
             <div className="form-group">
@@ -111,6 +121,7 @@ const SuperBowlWingsDetails = () => {
                 ))}
               </select>
             </div>
+            
           </div>
 
           <p className="details-total">Total Price: ${combo.price.toFixed(2)}</p>
@@ -123,6 +134,7 @@ const SuperBowlWingsDetails = () => {
             Add to Cart
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

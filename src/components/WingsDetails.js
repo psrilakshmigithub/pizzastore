@@ -49,6 +49,7 @@ const WingsDetails = () => {
         quantity,
         priceByQuantity: calculateTotalPrice(),
         totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
+        description: wing.description,
       };
 
       if (!userId) {
@@ -79,20 +80,29 @@ const WingsDetails = () => {
         </a>
       </div>
       <div className="details-container">
+       
         <div className="product-container">
-          <div className="prod-img">
-            <img
-              src={`http://localhost:5000${wing.image}`}
-              alt={wing.name}
-              className="details-image"
-            />
-          </div>
-          <div className="prod-details">
-            <h1 className="details-title">{wing.name}</h1>
-            {/* Show the price for the default size (calculated for quantity=1) */}
-            <p className="details-price">Price: ${calculateTotalPrice()}</p>
-          </div>
-        </div>
+  {/* Image Section */}
+  <div className="prod-img">
+    <img 
+      src={`http://localhost:5000${wing.image}`} 
+      alt={wing.name} 
+    />
+  </div>
+
+  {/* Details Section */}
+  <div className="prod-details">
+    <h1>{wing.name}</h1>
+    <p className="details-price"> Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
+
+    {/* Description Box */}
+    <div className="description-box">
+      <h3>📌 What's Included?</h3>
+      <p>{wing.description}</p>
+    </div>
+  </div>
+</div>
+        <div className="form-container">
         <form className="details-form">
           <div className="form-wrap">
             <div className="form-group">
@@ -146,6 +156,7 @@ const WingsDetails = () => {
             Add to Cart
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

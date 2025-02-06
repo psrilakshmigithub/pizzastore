@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/Details.css';
 
-const FamilyComboDetails = () => {
+const MegaComboDeal = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const [combo, setCombo] = useState({
     price: 0, 
@@ -16,7 +16,6 @@ const FamilyComboDetails = () => {
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedWingsFlavor, setSelectedWingsFlavor] = useState('');
-  const [selectedDrinks, setSelectedDrinks] = useState([]); // Allows multiple drinks
   const [selectedSide, setSelectedSide] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [sizeDescription, setSizeDescription] = useState('');
@@ -38,9 +37,7 @@ const FamilyComboDetails = () => {
         setSelectedSide(response.data.details.sides[0]);
         
         setSizeDescription(response.data.details.sizeDescriptions[response.data.details.sizes[0]]);
-        if (response.data.details.drinks && response.data.details.drinks.length > 0) {
-          setSelectedDrinks([]);
-        }
+        
       } catch (error) {
         console.error('Error fetching combo details:', error);
       }
@@ -55,27 +52,11 @@ const FamilyComboDetails = () => {
       }
     };
 
-    const fetchDrinks = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/products/beverages');
-        setCombo((prevCombo) => {
-          if (!prevCombo) return null; // Ensure prevCombo is not null before spreading
-          return {
-            ...prevCombo,
-            details: {
-              ...prevCombo.details,
-              drinks: response.data.map((drink) => drink.name),
-            },
-          };
-        });
-      } catch (error) {
-        console.error('Error fetching drinks:', error);
-      }
-    };
+   
 
     fetchComboDetails();
     fetchToppings();
-    fetchDrinks();
+   
   }, [id]);
 
   const handleSizeChange = (event) => {
@@ -119,20 +100,7 @@ const FamilyComboDetails = () => {
     });
   };
 
-  const handleDrinkSelection = (drink) => {
-    setSelectedDrinks((prev) => {
-      if (prev.includes(drink)) {
-        return prev.filter((d) => d !== drink);
-      } else {
-        if (prev.length < 4) {
-          return [...prev, drink];
-        } else {
-          alert('You can select a maximum of 4 drinks.');
-          return prev;
-        }
-      }
-    });
-  };
+  
 
   const handleAddToCart = async () => {
     try {
@@ -141,8 +109,7 @@ const FamilyComboDetails = () => {
         productId: combo._id,
         size: selectedSize,
         wingsFlavor: selectedWingsFlavor,
-        sides: [selectedSide], // Ensure sides are included as an array
-        drinks: selectedDrinks.map((drink) => ({ name: drink, quantity: 1 })), // Handle multiple drinks
+        sides: [selectedSide], // Ensure sides are included as an array       
         toppings: selectedToppings,
         quantity,
         priceByQuantity: calculateTotalPrice(),
@@ -159,14 +126,14 @@ const FamilyComboDetails = () => {
       }
 
       await axios.post('http://localhost:5000/api/cart', { userId, ...order });
-      alert('Family combo added to cart!');
+      alert('Mega combo added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
       alert('Failed to add to cart.');
     }
   };
 
-  if (!combo) return <div className="loading">Loading family combo details...</div>;
+  if (!combo) return <div className="loading">Loading Mega combo details...</div>;
 
   return (
     <div>
@@ -232,24 +199,7 @@ const FamilyComboDetails = () => {
                 ))}
               </select>
             </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="drinks">Choose Drinks:</label>
-            <div id="drinks">
-              {combo.details.drinks.map((drink) => (
-                <label key={drink}>
-                  <input
-                    type="checkbox"
-                    value={drink}
-                    checked={selectedDrinks.includes(drink)}
-                    onChange={() => handleDrinkSelection(drink)}
-                  />
-                  {drink}
-                </label>
-              ))}
-            </div>
-          </div>
+          </div>         
 
           {Array.from({ length: combo.details.pizzas }).map((_, pizzaIndex) => (
             <div key={pizzaIndex} className="form-group">
@@ -295,4 +245,4 @@ const FamilyComboDetails = () => {
   );
 };
 
-export default FamilyComboDetails;
+export default MegaComboDeal;

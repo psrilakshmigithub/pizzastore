@@ -6,6 +6,7 @@ import Category from "./components/Category";
 import WingsDetails from "./components/WingsDetails";
 import ComboDetails from "./components/ComboDetails";
 import FamilyComboDetails from "./components/FamilyComboDetails";
+import MegaComboDeal from "./components/MegaComboDeal";
 import ThreeForOneDetails from "./components/ThreeForOneDetails";
 import TwoForOneDetails from "./components/TwoForOneDetails";
 import PanzerotteDetails from "./components/PanzerotteDetails";
@@ -53,9 +54,10 @@ const App = () => {
                 <Route path="wings/:id" element={<WingsDetails />} />
                 <Route path="combos/:id" element={<ComboDetails />} />
                 <Route path="familycombos/:id" element={<FamilyComboDetails />} />
+                <Route path="megadealcombo/:id" element={<MegaComboDeal />} />
                 <Route path="twoforonedeals/:id" element={<TwoForOneDetails />} />
                 <Route path="threeforonedeals/:id" element={<ThreeForOneDetails />} />
-                <Route path="panzerotte/:id" element={<PanzerotteDetails />} />
+                <Route path="panzerotti/:id" element={<PanzerotteDetails />} />
                 <Route path="category/beverages" element={<BeveragesDetails />} />
                 <Route path="sides/:id" element={<Sides />} />
                 <Route path="/superbowlcombo/:id" element={<SuperBowlWingsDetails />} />

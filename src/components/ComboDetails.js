@@ -8,7 +8,7 @@ const ComboDetails = () => {
   const navigate = useNavigate();
   const [combo, setCombo] = useState({
     price: 0, 
-    details: { sizes: [], wingsFlavors: [], sides: [], drinks: [], sizePrices: {} }
+    details: { sizes: [], wingsFlavors: [], sides: [], drinks: [], sizePrices: {},sizeDescriptions:{} }
   });
   const [toppings, setToppings] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
@@ -17,6 +17,7 @@ const ComboDetails = () => {
   const [selectedFlavor, setSelectedFlavor] = useState('');
   const [selectedSide, setSelectedSide] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [sizeDescription, setSizeDescription] = useState('');
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
   useEffect(() => {
@@ -27,7 +28,8 @@ const ComboDetails = () => {
         setSelectedSize(response.data.details.sizes[0]);
         setSelectedFlavor(response.data.details.wingsFlavors[0]);
         setSelectedSide(response.data.details.sides[0]);
-       
+        setSizeDescription(response.data.details.sizeDescriptions[response.data.details.sizes[0]]);
+
         if (response.data.details.drinks && response.data.details.drinks.length > 0) {
           setSelectedDrinks([]);
 
@@ -87,21 +89,28 @@ const ComboDetails = () => {
   
 
   const handleDrinkSelection = (drink) => {
+    const maxDrinks = selectedSize === 'Small' ? 2 : selectedSize === 'Medium' ? 3 : 4;
+
     setSelectedDrinks((prev) => {
       if (prev.includes(drink)) {
         return prev.filter((d) => d !== drink);
       } else {
-        if (prev.length < 2) {
+        if (prev.length < maxDrinks) {
           return [...prev, drink];
         } else {
-          alert('You can select a maximum of 2 drinks.');
+          alert(`You can select a maximum of ${maxDrinks} drinks for a ${selectedSize} size.`);
           return prev;
         }
       }
     });
   };
  
-
+  const handleSizeChange = (event) => {
+    const newSize = event.target.value;
+    setSelectedSize(newSize);
+    setSizeDescription(combo.details.sizeDescriptions[newSize]);
+    
+  };
   const handleAddToCart = async () => {
     try {
       const order = {
@@ -115,6 +124,7 @@ const ComboDetails = () => {
         quantity,
         priceByQuantity: calculateTotalPrice(),
         totalPrice: (calculateTotalPrice()* quantity).toFixed(2),
+        description: sizeDescription,
       };
 
       if (!userId) {
@@ -139,21 +149,33 @@ const ComboDetails = () => {
     <div>
     <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
     <div className="details-container">
-      <div className="product-container">
-      <div className="prod-img"><img src={`http://localhost:5000${combo.image}`} alt={combo.name} className="details-image" /></div>
-      <div className="prod-details">
-        <h1 className="details-title">{combo.name}</h1>
-        <p className="details-price">
-  Base Price: ${combo?.price ? combo.price.toFixed(2) : "0.00"}
-</p>
-       
-      </div>
-      </div> 
+    <div className="product-container">
+  {/* Image Section */}
+  <div className="prod-img">
+    <img 
+      src={`http://localhost:5000${combo.image}`} 
+      alt={combo.name} 
+    />
+  </div>
+
+  {/* Details Section */}
+  <div className="prod-details">
+    <h1>{combo.name}</h1>
+    <p className="details-price"> Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
+
+    {/* Description Box */}
+    <div className="description-box">
+      <h3>📌 What's Included?</h3>
+      <p>{sizeDescription}</p>
+    </div>
+  </div>
+</div>
+<div className="form-container">
       <form className="details-form">
       <div className="form-wrap">
         <div className="form-group">
           <label htmlFor="size">Choose Size:</label>
-          <select id="size" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
+          <select id="size" value={selectedSize} onChange={handleSizeChange}>
             {combo.details.sizes.map((size) => (           
               <option key={size} value={size}>
                     {size} (Additional: ${combo.details.sizePrices[size].toFixed(2)})
@@ -219,6 +241,7 @@ const ComboDetails = () => {
         <p className="details-total">Total: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
         <button className="add-to-cart-btn" type="button" onClick={handleAddToCart}>Add to Cart</button>
       </form>
+      </div>
     </div></div>
   );
 };

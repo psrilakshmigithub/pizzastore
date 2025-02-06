@@ -89,15 +89,27 @@ const PanzerotteDetails = () => {
     <div className="back-btn-wrap"><a href="/" className='back-btn'> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to Categories</a></div>
   <div className="details-container">
     <div className="product-container">
-    <div className="prod-img">
-    <img src={`http://localhost:5000${panzerotte.image}`} alt={panzerotte.name} className="details-image" />
+  {/* Image Section */}
+  <div className="prod-img">
+    <img 
+      src={`http://localhost:5000${panzerotte.image}`} 
+      alt={panzerotte.name} 
+    />
+  </div>
+
+  {/* Details Section */}
+  <div className="prod-details">
+    <h1>{panzerotte.name}</h1>
+    <p className="details-price"> Price: ${(calculateTotalPrice()* quantity).toFixed(2)}</p>
+
+    {/* Description Box */}
+    <div className="description-box">
+      <h3>📌 What's Included?</h3>
+      <p>{panzerotte.description}</p>
     </div>
-    <div className="prod-details">
-    <h1 className="details-title">{panzerotte.name}</h1>
-    <p className="details-price">Base Price: ${panzerotte.price.toFixed(2)}</p>
-    </div>
-    </div>
-    
+  </div>
+</div>
+    <div className="form-container">
     <form className="details-form">
         <div className="form-group">
           <label htmlFor="flavor">Choose Flavor:</label>
@@ -144,6 +156,7 @@ const PanzerotteDetails = () => {
           Add to Cart
         </button>
       </form>
+      </div>
   </div>
   </div>
 
