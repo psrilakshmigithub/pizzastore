@@ -25,8 +25,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe("pk_test_51QjvRCBpoKRfd7wJg46FVlz6xnmYIiy5Co4IAaIOummGpsWFqNkDo0fyo9zriDBl1aETR0sV4LBUCPiOMyZqVlF300Dg0jS3oe");
-//const googleMapsApiKey = "AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg"; // Replace with your actual API key
+// Load Stripe public key from environment variable
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const App = () => {
   const [storeOpen, setStoreOpen] = useState(true);
@@ -34,7 +34,7 @@ const App = () => {
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/store/status");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/store/status`);
         setStoreOpen(response.data.storeOpen);
       } catch (error) {
         console.error("Error fetching store status:", error);
@@ -43,35 +43,35 @@ const App = () => {
 
     fetchStoreStatus();
   }, []);
+
   return (
-    <GoogleOAuthProvider clientId="471126766852-ghap4haabnrqjnpb6aq5s7am7b6hiho8.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}>
       <Elements stripe={stripePromise}>
-           <Router>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<HomePage storeOpen={storeOpen} />} />
-                <Route path="category/:category" element={<Category />} />
-                <Route path="wings/:id" element={<WingsDetails />} />
-                <Route path="combos/:id" element={<ComboDetails />} />
-                <Route path="familycombos/:id" element={<FamilyComboDetails />} />
-                <Route path="megadealcombo/:id" element={<MegaComboDeal />} />
-                <Route path="twoforonedeals/:id" element={<TwoForOneDetails />} />
-                <Route path="threeforonedeals/:id" element={<ThreeForOneDetails />} />
-                <Route path="panzerotti/:id" element={<PanzerotteDetails />} />
-                <Route path="category/beverages" element={<BeveragesDetails />} />
-                <Route path="sides/:id" element={<Sides />} />
-                <Route path="/superbowlcombo/:id" element={<SuperBowlWingsDetails />} />
-                <Route path="/cart" element={<Cart storeOpen={storeOpen} />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/payment" element={<PaymentPage storeOpen={storeOpen} />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/my-orders" element={<MyOrders />} />
-                <Route path="/managecontacts" element={<ManageContacts />} />
-              </Route>
-            </Routes>
-          </Router>
-      
+        <Router>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage storeOpen={storeOpen} />} />
+              <Route path="category/:category" element={<Category />} />
+              <Route path="wings/:id" element={<WingsDetails />} />
+              <Route path="combos/:id" element={<ComboDetails />} />
+              <Route path="familycombos/:id" element={<FamilyComboDetails />} />
+              <Route path="megadealcombo/:id" element={<MegaComboDeal />} />
+              <Route path="twoforonedeals/:id" element={<TwoForOneDetails />} />
+              <Route path="threeforonedeals/:id" element={<ThreeForOneDetails />} />
+              <Route path="panzerotti/:id" element={<PanzerotteDetails />} />
+              <Route path="category/beverages" element={<BeveragesDetails />} />
+              <Route path="sides/:id" element={<Sides />} />
+              <Route path="/superbowlcombo/:id" element={<SuperBowlWingsDetails />} />
+              <Route path="/cart" element={<Cart storeOpen={storeOpen} />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment" element={<PaymentPage storeOpen={storeOpen} />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/my-orders" element={<MyOrders />} />
+              <Route path="/managecontacts" element={<ManageContacts />} />
+            </Route>
+          </Routes>
+        </Router>
       </Elements>
     </GoogleOAuthProvider>
   );

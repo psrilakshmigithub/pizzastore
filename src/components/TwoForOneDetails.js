@@ -16,7 +16,7 @@ const TwoForOneDetails = () => {
   useEffect(() => {
     const fetchDealDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
         setDeal(response.data);
         setSelectedSize(response.data.details.sizes[0]);
       } catch (error) {
@@ -26,7 +26,7 @@ const TwoForOneDetails = () => {
 
     const fetchToppings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/toppings');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/toppings`);
         setToppings(response.data);
       } catch (error) {
         console.error('Error fetching toppings:', error);
@@ -36,7 +36,7 @@ const TwoForOneDetails = () => {
       if (userId) {
         // Fetch cart items from the backend for logged-in users
         try {
-          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart?userId=${userId}`);
           setCartItems(response.data);
         } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -100,7 +100,7 @@ const TwoForOneDetails = () => {
           alert('Item added to cart.');
           return;   
       }
-      await axios.post('http://localhost:5000/api/cart',  { userId, ...order });
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`,  { userId, ...order });
       setCartItems((prev) => [...prev, order]);
       alert('Two-for-One Deal added to cart!');
     } catch (error) {
@@ -124,7 +124,7 @@ const TwoForOneDetails = () => {
   {/* Image Section */}
   <div className="prod-img">
     <img 
-      src={`http://localhost:5000${deal.image}`} 
+      src={`${process.env.REACT_APP_API_BASE_URL}${deal.image}`} 
       alt={deal.name} 
     />
   </div>

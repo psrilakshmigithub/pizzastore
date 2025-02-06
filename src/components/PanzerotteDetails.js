@@ -17,7 +17,7 @@ const PanzerotteDetails = () => {
   useEffect(() => {
     const fetchPanzerotteDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
         setPanzerotte(response.data);
         setSelectedFlavor(response.data.details.Flavors[0]);
       } catch (error) {
@@ -27,7 +27,7 @@ const PanzerotteDetails = () => {
 
     const fetchToppings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/toppings');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/toppings`);
         setToppings(response.data);
       } catch (error) {
         console.error('Error fetching toppings:', error);
@@ -37,7 +37,7 @@ const PanzerotteDetails = () => {
       if (userId) {
         // Fetch cart items from the backend for logged-in users
         try {
-          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart?userId=${userId}`);
           setCartItems(response.data);
         } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -95,7 +95,7 @@ const PanzerotteDetails = () => {
           alert('Item added to cart.');
           return;   
       }
-      await axios.post('http://localhost:5000/api/cart',  order );
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`,  order );
       setCartItems((prev) => [...prev, order]); 
       alert('Panzerotte added to cart!');
     } catch (error) {
@@ -115,7 +115,7 @@ const PanzerotteDetails = () => {
   {/* Image Section */}
   <div className="prod-img">
     <img 
-      src={`http://localhost:5000${panzerotte.image}`} 
+      src={`${process.env.REACT_APP_API_BASE_URL}${panzerotte.image}`} 
       alt={panzerotte.name} 
     />
   </div>

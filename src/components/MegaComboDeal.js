@@ -25,7 +25,7 @@ const MegaComboDeal = () => {
   useEffect(() => {
     const fetchComboDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
         setCombo(response.data);
 
         // Initialize toppings for each pizza.
@@ -46,7 +46,7 @@ const MegaComboDeal = () => {
 
     const fetchToppings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/toppings');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/toppings`);
         setToppings(response.data);
       } catch (error) {
         console.error('Error fetching toppings:', error);
@@ -56,7 +56,7 @@ const MegaComboDeal = () => {
       if (userId) {
         // Fetch cart items from the backend for logged-in users
         try {
-          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart?userId=${userId}`);
           setCartItems(response.data);
         } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -143,7 +143,7 @@ const MegaComboDeal = () => {
         return;       
       }
 
-      await axios.post('http://localhost:5000/api/cart', { userId, ...order });
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`, { userId, ...order });
       setCartItems((prev) => [...prev, order]);
       alert('Mega combo added to cart!');
     } catch (error) {
@@ -166,7 +166,7 @@ const MegaComboDeal = () => {
   {/* Image Section */}
   <div className="prod-img">
     <img 
-      src={`http://localhost:5000${combo.image}`} 
+      src={`${process.env.REACT_APP_API_BASE_URL}${combo.image}`} 
       alt={combo.name} 
     />
   </div>

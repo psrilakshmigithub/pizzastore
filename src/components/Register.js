@@ -53,7 +53,7 @@
 //     const sanitizedFormData = { ...formData, contacts: sanitizedContacts };
 
 //     try {
-//       await axios.post('http://localhost:5000/api/auth/register', sanitizedFormData);
+//       await axios.post('${process.env.REACT_APP_API_BASE_URL}/api/auth/register', sanitizedFormData);
 //       alert('Registration Successful');
 //       navigate('/managecontacts');
 //     } catch (error) {
@@ -176,7 +176,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response =await axios.post('http://localhost:5000/api/auth/register', formData);
+        const response =await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, formData);
       localStorage.setItem('user', JSON.stringify(response.data.user));
      
       alert('Registration Successful');

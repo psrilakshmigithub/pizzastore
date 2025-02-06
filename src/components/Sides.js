@@ -15,7 +15,7 @@ const Sides = () => {
   useEffect(() => {
     const fetchSides = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/products?category=Sides');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products?category=Sides`);
         setSides(response.data);
       } catch (error) {
         console.error('Error fetching sides:', error);
@@ -78,7 +78,7 @@ const Sides = () => {
         totalPrice: (side.price * quantity).toFixed(2),
       };
 
-      await axios.post('http://localhost:5000/api/cart', order);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`, order);
       alert('Side added to cart!');
     } catch (error) {
       console.error('Error adding side to cart:', error.message);
@@ -99,7 +99,7 @@ const Sides = () => {
           {sides.map((side) => (
             <div key={side._id} className="item-card">
               <img
-                src={`http://localhost:5000${side.image}`}
+                src={`${process.env.REACT_APP_API_BASE_URL}${side.image}`}
                 alt={side.name}
                 className="category-card-image"
               />

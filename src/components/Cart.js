@@ -33,7 +33,7 @@ const Cart = ({ storeOpen }) => {
       } else {
         try {
           console.log("User logged in");
-          const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}`);
           console.log("response for userId", response.data);
           setCartItems(Array.isArray(response.data.items) ? response.data.items : []); 
           console.log("Fetched cart items:", response.data.items);
@@ -51,7 +51,7 @@ const Cart = ({ storeOpen }) => {
     const updatedCart = await Promise.all(
       cart.map(async (item) => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/products/${item.productId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${item.productId}`);
           return {
             ...item,
             // If no unique id exists, generate one
@@ -103,7 +103,7 @@ const Cart = ({ storeOpen }) => {
       // If user is logged in, update via API.
       if (userId && localCart.length === 0) {
         console.log("Logged in: updating quantity");
-        const response = await axios.put(`http://localhost:5000/api/cart/${userId}/${itemId}`, { quantity });
+        const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}/${itemId}`, { quantity });
         console.log("Response after quantity update:", response.data);
         setCartItems(Array.isArray(response.data) ? response.data : []);
       } else {
@@ -140,7 +140,7 @@ const Cart = ({ storeOpen }) => {
     try {
       const localCart = JSON.parse(localStorage.getItem('cart')) || [];
       if (userId && localCart.length === 0) {
-        const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${itemId}`);
+        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}/${itemId}`);
         console.log("Response after deletion:", response.data);
         setCartItems(Array.isArray(response.data) ? response.data : []);
       } else {
@@ -172,7 +172,7 @@ const Cart = ({ storeOpen }) => {
           const { _id, ...rest } = item;  // Remove the local _id field
           return rest;
         });
-        const response = await axios.post('http://localhost:5000/api/cart/merge-cart', {
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart/merge-cart`, {
           userId,
           localCart: sanitizedCart,
         });
@@ -209,13 +209,13 @@ const Cart = ({ storeOpen }) => {
   
   const updateTotalPriceInCart = async (newTotalPrice) => {
     try {
-      await axios.get(`http://localhost:5000/api/cart/${userId}/updateTotalPrice`, {
+      await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}/updateTotalPrice`, {
         params: {
           newTotalPrice: newTotalPrice,
            tip: ((calculateSubtotal() * tipPercentage) / 100).toFixed(2),
         },
       });
-      //await axios.get(`http://localhost:5000/api/cart/${userId}/updateTotalPrice/${newTotalPrice}`);
+      //await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}/updateTotalPrice/${newTotalPrice}`);
     } catch (error) {
       console.error('Error updating total price in cart:', error.message);
     }
@@ -246,7 +246,7 @@ const Cart = ({ storeOpen }) => {
             {cartItems.map((item) => (
               <div key={item._id} className="cart-item">
                 <img
-                  src={`http://localhost:5000${item.productId.image}`}
+                  src={`${process.env.REACT_APP_API_BASE_URL}${item.productId.image}`}
                   alt={item.productId.name}
                   className="cart-item-image"
                 />

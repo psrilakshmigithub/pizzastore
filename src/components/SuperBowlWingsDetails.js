@@ -15,7 +15,7 @@ const SuperBowlWingsDetails = () => {
   useEffect(() => {
     const fetchComboDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
         setCombo(response.data);
         // Set default selections
         setSelectedFlavor(response.data.details.wingsFlavors[0]);
@@ -28,7 +28,7 @@ const SuperBowlWingsDetails = () => {
       if (userId) {
         // Fetch cart items from the backend for logged-in users
         try {
-          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart?userId=${userId}`);
           setCartItems(response.data);
         } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -68,7 +68,7 @@ const SuperBowlWingsDetails = () => {
       }
 
       console.log('Order payload:', order);
-      await axios.post('http://localhost:5000/api/cart', order);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`, order);
       setCartItems((prev) => [...prev, order]); 
       alert('Super Bowl Wings Combo added to cart!');
     } catch (error) {
@@ -94,7 +94,7 @@ const SuperBowlWingsDetails = () => {
       {/* Image Section */}
   <div className="prod-img">
     <img 
-      src={`http://localhost:5000${combo.image}`} 
+      src={`${process.env.REACT_APP_API_BASE_URL}${combo.image}`} 
       alt={combo.name} 
     />
   </div>

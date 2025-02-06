@@ -11,7 +11,7 @@ const Category = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/items/${category}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/items/${category}`);
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching items:', error);
@@ -35,7 +35,7 @@ const Category = () => {
             key={index}
             className="item-card"
           >
-            <img src={`http://localhost:5000${item.image}`} alt={item.name} className="item-card-image" />
+            <img src={`${process.env.REACT_APP_API_BASE_URL}${item.image}`} alt={item.name} className="item-card-image" />
             <h3 className="item-card-title">{item.name}</h3>
             <p className="item-card-price">${item.price.toFixed(2)}</p>
           </Link>

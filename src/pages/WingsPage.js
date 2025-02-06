@@ -9,7 +9,7 @@ const WingsPage = () => {
     useEffect(() => {
         const fetchWings = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/menu?category=Wings');
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/menu?category=Wings`);
                 setWings(response.data);
             } catch (err) {
                 console.error('Error fetching wings menu:', err.message);

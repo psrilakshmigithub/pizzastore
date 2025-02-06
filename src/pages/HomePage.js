@@ -9,7 +9,7 @@ const HomePage = ({ storeOpen }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
         const filteredItems = response.data.reduce((acc, item) => {
           // Show only one card for "Beverages" and "Sides" categories
           if (["Beverages", "Sides"].includes(item.category)) {
@@ -50,7 +50,7 @@ const HomePage = ({ storeOpen }) => {
                 }
               >
                 <img
-                  src={`http://localhost:5000${item.image}`}
+                  src={`${process.env.REACT_APP_API_BASE_URL}${item.image}`}
                   alt={item.name}
                   className="category-card-image"
                 />

@@ -8,7 +8,7 @@ const MenuPage = ({ category }) => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/menu`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/menu`);
         const filteredItems = response.data.filter(item => item.category === category);
         setMenuItems(filteredItems);
       } catch (err) {

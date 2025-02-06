@@ -16,7 +16,7 @@ const OrderReviewPage = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders/cart/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/orders/cart/${userId}`);
         setCartItems(response.data);
       } catch (error) {
         console.error('Error fetching cart items:', error);
@@ -33,7 +33,7 @@ const OrderReviewPage = () => {
 
   const handleQuantityChange = async (orderId, newQuantity) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/orders/cart/${orderId}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/orders/cart/${orderId}`, {
         quantity: newQuantity,
       });
       setCartItems((prevItems) =>
@@ -48,7 +48,7 @@ const OrderReviewPage = () => {
 
   const handleRemoveItem = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${orderId}`);
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/orders/${orderId}`);
       setCartItems((prevItems) => prevItems.filter((item) => item._id !== orderId));
     } catch (error) {
       console.error('Error removing item:', error);
@@ -70,7 +70,7 @@ const OrderReviewPage = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/orders/confirm', orderDetails);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders/confirm`, orderDetails);
       navigate('/payment'); // Redirect to the payment page
     } catch (error) {
       console.error('Error confirming order:', error);
@@ -86,7 +86,7 @@ const OrderReviewPage = () => {
         {cartItems.map((item) => (
           <div key={item._id} className="cart-item">
             <img
-              src={`http://localhost:5000${item.productId.image}`}
+              src={`${process.env.REACT_APP_API_BASE_URL}${item.productId.image}`}
               alt={item.productId.name}
               className="cart-item-image"
             />

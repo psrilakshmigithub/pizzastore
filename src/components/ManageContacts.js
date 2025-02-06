@@ -19,7 +19,7 @@ const ManageContacts = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/user/${userId}/contacts`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts`);
         setContacts(response.data);
         setLoading(false); // Set loading to false after fetching data
       } catch (error) {
@@ -46,7 +46,7 @@ const ManageContacts = () => {
     delete sanitizedContact.autocomplete;
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/user/${userId}/contacts`, sanitizedContact);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts`, sanitizedContact);
       setContacts(response.data);
       setNewContact({ phone: '', address: '', isDefault: false });
       setIsAdding(false); // Hide form after adding contact
@@ -72,7 +72,7 @@ const ManageContacts = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/user/${userId}/contacts/${contactId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts/${contactId}`,
         sanitizedContact
       );
       setContacts(response.data);
@@ -89,7 +89,7 @@ const ManageContacts = () => {
 
   const handleDeleteContact = async (contactId) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/user/${userId}/contacts/${contactId}`);
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts/${contactId}`);
       setContacts(response.data);
     } catch (error) {
       console.error('Error deleting contact:', error);
@@ -102,7 +102,7 @@ const ManageContacts = () => {
       const updatedContact = contacts.find((c) => c._id === contactId);
       updatedContact.isDefault = true;
 
-      await axios.put(`http://localhost:5000/api/user/${userId}/contacts/${contactId}`, updatedContact);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts/${contactId}`, updatedContact);
       const updatedContacts = contacts.map((c) =>
         c._id === contactId ? { ...c, isDefault: true } : { ...c, isDefault: false }
       );

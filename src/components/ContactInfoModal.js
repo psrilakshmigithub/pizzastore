@@ -13,7 +13,7 @@ const ContactInfoModal = ({ userId, onSave, onClose }) => {
     setError('');
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/user/${userId}/contacts/default`, contact);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts/default`, contact);
       onSave(response.data);
       onClose();
     } catch (error) {

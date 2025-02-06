@@ -27,7 +27,7 @@ const PaymentPage = ({ storeOpen }) => {
   useEffect(() => {
     const fetchCartDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart/${userId}`);
         const cart = response.data;
         setTotalAmount(cart.totalPrice);
         setTip(cart.tip);
@@ -35,7 +35,7 @@ const PaymentPage = ({ storeOpen }) => {
         setDeliveryFee(cart.deliveryFee);
         setDeliveryType(cart.deliveryType);
 
-        const paymentIntentResponse = await axios.post("http://localhost:5000/api/payment/create-payment-intent", {
+        const paymentIntentResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/payment/create-payment-intent`, {
           amount: cart.totalPrice * 100,
           userId,
           currency: "cad",
@@ -54,7 +54,7 @@ const PaymentPage = ({ storeOpen }) => {
   useEffect(() => {
     if (!orderId) return;
 
-    const eventSource = new EventSource(`http://localhost:5000/api/orders/sse?userId=${userId}`);
+    const eventSource = new EventSource(`${process.env.REACT_APP_API_BASE_URL}/api/orders/sse?userId=${userId}`);
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -108,7 +108,7 @@ const PaymentPage = ({ storeOpen }) => {
         }
       }
 
-      const response = await axios.post("http://localhost:5000/api/orders/complete-order", {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders/complete-order`, {
         userId,
         paymentIntentId,
         paymentOption,
@@ -142,7 +142,7 @@ const PaymentPage = ({ storeOpen }) => {
     <div key={item._id} className="order-item">
       <div className="order-item-left">
         <img
-          src={`http://localhost:5000${item.productId.image}`}
+          src={`${process.env.REACT_APP_API_BASE_URL}${item.productId.image}`}
           alt={item.productId.name}
           className="order-item-image"
         />

@@ -21,7 +21,7 @@ const Login = () => {
     const decodedToken = jwtDecode(credentialResponse.credential);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/social-login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/social-login`, {
         email: decodedToken.email,
         name: decodedToken.name,
       });
@@ -54,7 +54,7 @@ const Login = () => {
    
     try {
       const { email, name } = response;
-      const fbResponse = await axios.post('http://localhost:5000/api/auth/social-login', {
+      const fbResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/social-login`, {
         email,
         name,
       });
@@ -78,7 +78,7 @@ const Login = () => {
   const handleEmailPasswordLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, { email, password });
       localStorage.setItem('user', JSON.stringify(response.data.user));  
       setUser(response.data.user); // Update the user context      
       const from = location.state?.from || '/';

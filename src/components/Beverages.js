@@ -14,7 +14,7 @@ const Beverages = () => {
   useEffect(() => {
     const fetchBeverages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/products?category=Beverages');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products?category=Beverages`);
         setBeverages(response.data);
       } catch (error) {
         console.error('Error fetching beverages:', error);
@@ -79,7 +79,7 @@ const Beverages = () => {
         totalPrice: (bev.price * quantity).toFixed(2),
       };
 
-      await axios.post('http://localhost:5000/api/cart', order);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`, order);
       alert('Beverage added to cart!');
     } catch (error) {
       console.error('Error adding beverage to cart:', error.message);
@@ -100,7 +100,7 @@ const Beverages = () => {
           {beverages.map((bev) => (
             <div key={bev._id} className="item-card">
               <img
-                src={`http://localhost:5000${bev.image}`}
+                src={`${process.env.REACT_APP_API_BASE_URL}${bev.image}`}
                 alt={bev.name}
                 className="category-card-image"
               />

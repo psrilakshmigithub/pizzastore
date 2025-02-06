@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/user/${userId}/default-contact`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/default-contact`);
         console.log('Default Contact:', response.data);
         const defaultContact = response.data;
         if (defaultContact) {
@@ -55,7 +55,7 @@ const CheckoutPage = () => {
   const updateDefaultPhone = async (userId, phone) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/user/${userId}/contacts/default/${phone}`
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/contacts/default/${phone}`
       );
       console.log('Updated Default Contact:', response.data);
     } catch (error) {
@@ -83,7 +83,7 @@ const CheckoutPage = () => {
         instructions,
       };
 
-      const response = await axios.post('http://localhost:5000/api/cart/confirm', payload);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart/confirm`, payload);
       alert('Order confirmed successfully!');
       navigate('/Payment');
     } catch (error) {

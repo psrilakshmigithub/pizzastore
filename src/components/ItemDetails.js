@@ -12,7 +12,7 @@ const ItemDetails = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/items/details/${itemId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/items/details/${itemId}`);
         setItem(response.data);
         setTotalPrice(response.data.price);
       } catch (error) {
@@ -34,7 +34,7 @@ const ItemDetails = () => {
   useEffect(() => {
     const calculatePrice = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/pricing', {
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/pricing`, {
           itemId,
           extras,
         });

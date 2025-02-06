@@ -16,7 +16,7 @@ const WingsDetails = () => {
   useEffect(() => {
     const fetchWingDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
         setWing(response.data);
         // Initialize with the first available size and flavor
         setSelectedSize(response.data.details.sizes[0]);
@@ -29,7 +29,7 @@ const WingsDetails = () => {
       if (userId) {
         // Fetch cart items from the backend for logged-in users
         try {
-          const response = await axios.get(`http://localhost:5000/api/cart?userId=${userId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/cart?userId=${userId}`);
           setCartItems(response.data);
         } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -79,7 +79,7 @@ const WingsDetails = () => {
       }
 
       console.log('Order payload:', order);
-      await axios.post('http://localhost:5000/api/cart', order);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/cart`, order);
       setCartItems((prev) => [...prev, order]); 
       alert('Wing order added to cart!');
     } catch (error) {
@@ -106,7 +106,7 @@ const WingsDetails = () => {
   {/* Image Section */}
   <div className="prod-img">
     <img 
-      src={`http://localhost:5000${wing.image}`} 
+      src={`${process.env.REACT_APP_API_BASE_URL}${wing.image}`} 
       alt={wing.name} 
     />
   </div>

@@ -115,7 +115,7 @@ const Layout = () => {
 
   return (
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
-    <LoadScript googleMapsApiKey="AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg" libraries={libraries}>
+    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} libraries={libraries}>
       <div className="layout">
         {/* Navbar */}
         <header className="navbar">

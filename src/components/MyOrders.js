@@ -9,7 +9,7 @@ const MyOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/orders/${userId}`);
         setOrders(response.data);
         console.log(response.data);
       } catch (error) {
@@ -47,7 +47,7 @@ const MyOrdersPage = () => {
                     <div key={item._id} className="order-item-details">
                       <div className="order-item-left">
                         <img
-                          src={`http://localhost:5000${item.productId.image}`}
+                          src={`${process.env.REACT_APP_API_BASE_URL}${item.productId.image}`}
                           alt={item.productId.name}
                           className="order-item-image"
                         />
