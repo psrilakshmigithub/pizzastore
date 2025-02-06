@@ -117,6 +117,12 @@ const Layout = () => {
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
     <LoadScript googleMapsApiKey="AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg" libraries={libraries}>
       <div className="layout">
+        <div className="store_time">
+        <img alt="" src="http://localhost:3000/static/media/Time.png"/>
+          Hours of Operation:
+Sunday - Wednesday: 11:00 - 23:00
+Thursday: 11:00 - 00:00
+Friday - Saturday: 11:00 - 01:00</div>
         {/* Navbar */}
         <header className="navbar">
           <div className="logo">
@@ -124,7 +130,8 @@ const Layout = () => {
               <img src={logo} alt="Jumbo 3 for 1 Pizza and Wings" />
             </Link>
           </div>
-          <ul style={{ display: 'flex', listStyle: 'none', padding: 0, margin: 0 }}>
+          <div className="hdr-rightsection">
+          <ul className="pickdel-info">
             {orderType && (
               <li className="order-type-display">
                 <span>
@@ -134,7 +141,7 @@ const Layout = () => {
                     </p>
                   ) : (
                     <p>
-                      <i className="fa-solid fa-truck-pickup" aria-hidden="true"></i> Pickup :159 Fife Rd,Guelph, ON N1H 7N8
+                      <i className="fa-solid fa-truck-pickup" aria-hidden="true"></i> Pickup 159 Fife Rd,Guelph, ON N1H 7N8
                     </p>
                   )}
                 </span>
@@ -191,8 +198,11 @@ const Layout = () => {
               </li>
             </ul>
           </nav>
+          </div>
         </header>
-
+        <div className="topheader">
+        <i class="fa-solid fa-location-dot"></i> 159 Fife Rd, Guelph, ON N1H 7N8, Canada. &nbsp; <i class="fa-solid fa-phone"></i> Tel: +1 519-836-1818
+        </div>
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
@@ -205,7 +215,7 @@ const Layout = () => {
               <Outlet />
             </main>
             <aside className="sidebar">
-              <div className="store-info">
+              {/* <div className="store-info">
                 <h2>Store Information</h2>
                 <p>
                   <i className="fa fa-map-marker" aria-hidden="true"></i> <strong>Address:</strong>
@@ -224,7 +234,7 @@ const Layout = () => {
                 <p>
                   <i className="fa fa-envelope" aria-hidden="true"></i> <strong>Email:</strong> service@jumbo3for1pizza.ca
                 </p>
-              </div>
+              </div> */}
               <div className="special-offers">
                 <h2>Special Offers</h2>
                 <ul>
