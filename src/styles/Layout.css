@@ -103,9 +103,10 @@
 
 .main-banner {
   text-align: center;
-  background: url('../images/pizza-banner.jpg') no-repeat center center;
+  background-color: lightgreen;
+  
   background-size: cover;
-  color: white;
+  color: black;
   padding: 2rem;
 }
 
