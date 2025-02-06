@@ -6,8 +6,8 @@ import '../styles/Layout.css';
 import '../styles/main.css';
 import '../styles/ContactManagement.css';
 import logo from '../images/pizza-logo.png';
-import sidebarImg from '../images/honey_garlic_wings.jpg';
-
+import sidebarImg from '../images/superdeal.png';
+import time from '../images/Time.png';
 const libraries = ['places'];
 
 const Layout = () => {
@@ -118,12 +118,15 @@ const Layout = () => {
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
     <LoadScript googleMapsApiKey="AIzaSyDry07Si3iUU8GZx99IGFh_UI1fOhlzmwg" libraries={libraries}>
       <div className="layout">
-        {/* <div className="store_time">
-        <img alt="" src="/static/media/Time.png"/>
-          Hours of Operation:
-Sunday - Wednesday: 11:00 - 23:00
-Thursday: 11:00 - 00:00
-Friday - Saturday: 11:00 - 01:00</div> */}
+        <div className="store_time">
+        <img src={time} alt="Jumbo 3 for 1 Pizza and Wings" />
+          <div>
+          <h4>Hours of Operation</h4>
+            <p>11:00 - 23:00 Sunday to Wednesday</p>
+            <p>11:00 - 00:00 Thursday</p>
+            <p>11:00 - 01:00 Friday & Saturday</p>
+          </div>
+        </div>
         {/* Navbar */}
         <header className="navbar">
           <div className="logo">
@@ -207,13 +210,14 @@ Friday - Saturday: 11:00 - 01:00</div> */}
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
-            <h2>Welcome to Jumbo 3 for 1 Pizza and Wings</h2>
+            <button>Order Now</button>
+            {/* <h2>Welcome to Jumbo 3 for 1 Pizza and Wings</h2>
             <h2>+1(519)836-1818</h2>
             <h3> Address : 159 Fife Road, Guelph </h3><br></br>
             <h3>Sunday - Wednesday opens 11:00 - 11:00</h3>
             <h3>Thursday - Saturday opens 11:00 - 01:00</h3>
           
-          
+           */}
           </div>
 
           <div className="content-section">
@@ -221,7 +225,7 @@ Friday - Saturday: 11:00 - 01:00</div> */}
               <Outlet />
             </main>
             <aside className="sidebar">
-              <div className="store-info">
+              {/* <div className="store-info">
                 <h2>Store Information</h2>
                 <p>
                   <i className="fa fa-map-marker" aria-hidden="true"></i> <strong>Address:</strong>
@@ -240,12 +244,12 @@ Friday - Saturday: 11:00 - 01:00</div> */}
                 <p>
                   <i className="fa fa-envelope" aria-hidden="true"></i> <strong>Email:</strong> service@jumbo3for1pizza.ca
                 </p>
-              </div>
+              </div> */}
               <div className="special-offers">
                 <h2>Special Offers</h2>
                 <h3>Super Bowl Super Combo</h3>
                 <img src={sidebarImg}></img>
-                <button Link>Order Now </button>
+                <button className="ordernow" Link>Order Now </button>
               </div>
             </aside>
           </div>

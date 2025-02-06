@@ -71,6 +71,9 @@
   .tip-selection {
     margin: 10px 0;
   }
+  .tip-selection select{padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;}
   
   .checkout-btn {
     width: 100%;

@@ -116,7 +116,7 @@ margin-top: 24px;
 }
 
 .checkout-btn {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   background-color: #28a745;
   color: white;
