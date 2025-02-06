@@ -6,6 +6,7 @@ import '../styles/Layout.css';
 import '../styles/main.css';
 import '../styles/ContactManagement.css';
 import logo from '../images/pizza-logo.png';
+import sidebarImg from '../images/honey_garlic_wings.jpg';
 
 const libraries = ['places'];
 
@@ -206,8 +207,13 @@ Friday - Saturday: 11:00 - 01:00</div>
         {/* Main Layout */}
         <div className="main-layout">
           <div className="main-banner">
-            <h1>Welcome to Jumbo 3 for 1 Pizza and Wings</h1>
-            <p>Your one-stop destination for delicious pizzas, combos, and more!</p>
+            <h2>Welcome to Jumbo 3 for 1 Pizza and Wings</h2>
+            <h2>+1(519)836-1818</h2>
+            <h3> Address : 159 Fife Road, Guelph </h3><br></br>
+            <h3>Sunday - Wednesday opens 11:00 - 11:00</h3>
+            <h3>Thursday - Saturday opens 11:00 - 01:00</h3>
+          
+          
           </div>
 
           <div className="content-section">
@@ -215,7 +221,7 @@ Friday - Saturday: 11:00 - 01:00</div>
               <Outlet />
             </main>
             <aside className="sidebar">
-              {/* <div className="store-info">
+              <div className="store-info">
                 <h2>Store Information</h2>
                 <p>
                   <i className="fa fa-map-marker" aria-hidden="true"></i> <strong>Address:</strong>
@@ -234,20 +240,23 @@ Friday - Saturday: 11:00 - 01:00</div>
                 <p>
                   <i className="fa fa-envelope" aria-hidden="true"></i> <strong>Email:</strong> service@jumbo3for1pizza.ca
                 </p>
-              </div> */}
+              </div>
               <div className="special-offers">
                 <h2>Special Offers</h2>
-                <ul>
-                  <li>Buy 1 Get 1 Free on Large Pizzas</li>
-                  <li>Free Garlic Bread with Every Combo</li>
-                  <li>Discounted Beverages with Family Deals</li>
-                </ul>
+                <h3>Super Bowl Super Combo</h3>
+                <img src={sidebarImg}></img>
+                <button Link>Order Now </button>
               </div>
             </aside>
           </div>
         </div>
 
         <footer className="footer">
+          <div className='h-footer'>
+          <img src={logo} alt="Jumbo 3 for 1 Pizza and Wings" />
+          </div>
+       
+        
           <p>&copy; 2025 Pizza Store. All rights reserved.</p>
         </footer>
 
