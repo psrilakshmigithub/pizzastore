@@ -248,8 +248,11 @@ const Layout = () => {
               <div className="special-offers">
                 <h2>Special Offers</h2>
                 <h3>Super Bowl Super Combo</h3>
-                <img src={sidebarImg}></img>
-                <button className="ordernow" Link>Order Now </button>
+                <img src={sidebarImg}></img>   
+                <Link to="/superbowlcombo/67a3f2d6161931d84e356644">
+                  <button className="ordernow">Order Now</button>
+                </Link>            
+                
               </div>
             </aside>
           </div>
