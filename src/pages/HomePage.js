@@ -10,6 +10,7 @@ const HomePage = ({ storeOpen }) => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
+        console.log("response",response);
         const filteredItems = response.data.reduce((acc, item) => {
           // Show only one card for "Beverages" and "Sides" categories
           if (["Beverages", "Sides"].includes(item.category)) {

@@ -34,7 +34,10 @@ const App = () => {
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
+        debugger
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/store/status`);
+
+        console.log("process.env.REACT_APP_API_BASE_URL, response", process.env.REACT_APP_API_BASE_URL, response);
         setStoreOpen(response.data.storeOpen);
       } catch (error) {
         console.error("Error fetching store status:", error);
