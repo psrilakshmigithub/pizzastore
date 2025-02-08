@@ -26,7 +26,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 // Load Stripe public key from environment variable
-const stripePromise = loadStripe("pk_test_51QjvRCBpoKRfd7wJg46FVlz6xnmYIiy5Co4IAaIOummGpsWFqNkDo0fyo9zriDBl1aETR0sV4LBUCPiOMyZqVlF300Dg0jS3oe");
+const stripePromise = loadStripe("pk_live_51QjvRCBpoKRfd7wJLoHqey6AXZvDmoV2Smpv99LLnBOBs0VMnPXmTJOxhxvEKavyhVBtkW07EPmsXl6QaPBKpkSo00ArCoNkYE");
 
 const App = () => {
   const [storeOpen, setStoreOpen] = useState(true);
