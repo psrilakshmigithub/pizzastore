@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Outlet, useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
+import { Helmet } from 'react-helmet';
 import '../styles/Layout.css';
 import '../styles/main.css';
 import '../styles/ContactManagement.css';
@@ -118,6 +119,16 @@ const Layout = () => {
     // Wrap the entire Layout with LoadScript so the Maps API is loaded only once.
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} libraries={libraries}>
       <div className="layout">
+      <Helmet>
+          <title>Jumbo 3 for 1 Pizza and Wings</title>
+          <meta name="description" content="Order delicious pizza and wings from Jumbo 3 for 1 Pizza and Wings. Delivery and pickup available!" />
+          <meta name="keywords" content="pizza, wings, delivery, pickup, Guelph, Ontario, Jumbo Pizza" />
+          <meta property="og:title" content="Jumbo 3 for 1 Pizza and Wings" />
+          <meta property="og:description" content="Order delicious pizza and wings from Jumbo 3 for 1 Pizza and Wings. Delivery and pickup available!" />
+          <meta property="og:image" content="https://jumbo3for1pizzaandwings.ca/images/pizza-logo.png" />
+          <meta property="og:url" content="https://jumbo3for1pizzaandwings.ca" />
+          <meta property="og:type" content="website" />
+        </Helmet>
         <div className="store_time">
         <img src={time} alt="Jumbo 3 for 1 Pizza and Wings" />
           <div>
