@@ -260,7 +260,7 @@ const Layout = () => {
                 <h2>Special Offers</h2>
                 <h3>Super Bowl Super Combo</h3>
                 <img src={sidebarImg}></img>   
-                <Link to="/superbowlcombo/67a3f2d6161931d84e356644">
+                <Link to="/superbowlcombo/67a702d62c14681cab6493bb">
                   <button className="ordernow">Order Now</button>
                 </Link>            
                 
