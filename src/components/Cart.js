@@ -9,7 +9,7 @@ const generateUniqueId = () =>
 
 const Cart = ({ storeOpen }) => {
   const [cartItems, setCartItems] = useState([]); // Initialize as an array
-  const [tipPercentage, setTipPercentage] = useState(10); 
+  const [tipPercentage, setTipPercentage] = useState(5); 
   const [taxRate] = useState(0.13); // Example: 13% tax
   const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;

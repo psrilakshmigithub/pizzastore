@@ -9,8 +9,7 @@ const ManageContacts = () => {
   const [contacts, setContacts] = useState([]);
   const [newContact, setNewContact] = useState({ phone: '', address: '', isDefault: true });
   const [isAdding, setIsAdding] = useState(false); // Manage visibility of the add contact form
-  const [editingContact, setEditingContact] = useState(null); // Track contact being edited
-  const [error, setError] = useState('');
+  const [editingContact, setEditingContact] = useState(null); // Track contact being edited  
   const [loading, setLoading] = useState(true); // Add a loading state
   const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
@@ -37,11 +36,10 @@ const ManageContacts = () => {
 
   const handleAddContact = async () => {
     if (!newContact.phone || !newContact.address) {
-      setError('Phone and address are required.');
+      alert('Phone and address are required.');
       return;
     }
-    setError('');
-
+   
     const sanitizedContact = { ...newContact };
     delete sanitizedContact.autocomplete;
 
@@ -62,11 +60,9 @@ const ManageContacts = () => {
 
   const handleEditContact = async (contactId) => {
     if (!editingContact.phone || !editingContact.address) {
-      setError('Phone and address are required.');
+      alert('Phone and address are required.');
       return;
-    }
-    setError('');
-
+    }  
     const sanitizedContact = { ...editingContact };
     delete sanitizedContact.autocomplete;
 

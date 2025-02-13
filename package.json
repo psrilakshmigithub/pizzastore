@@ -30,7 +30,7 @@
     "npm": "8.x"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "heroku-postbuild": "npm install serve && npm run build"
   },

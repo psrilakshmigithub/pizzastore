@@ -8,7 +8,7 @@
 
 
 .topheader{background:#f9f5de; border-bottom: 1px solid #888; padding: 24px 0; text-align: center;font-weight: 600; color:#545353;}
-.store_time{    position: fixed;
+.store_time{    position: absolute;
   right: 0px;
   top: 133px;
   border-radius: 8px 0px 0px 16px;

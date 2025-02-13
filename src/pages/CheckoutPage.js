@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Checkout.css';
 
 const CheckoutPage = () => {
   const [deliveryType, setDeliveryType] = useState(localStorage.getItem('orderType') || 'pickup');
   const [contactInfo, setContactInfo] = useState({ phone: '', address: '' });
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isPhoneEditable, setIsPhoneEditable] = useState(false); // Toggle phone number edit mode
+  const [isPhoneEditable, setIsPhoneEditable] = useState(false);
   const [scheduledTime, setScheduledTime] = useState('');
   const [instructions, setInstructions] = useState('');
-  const [isPhoneRequired, setIsPhoneRequired] = useState(false); // To check if phone is required for pickup
+  const [isPhoneRequired, setIsPhoneRequired] = useState(false);
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const navigate = useNavigate();
-  const location = useLocation();
   const userId = JSON.parse(localStorage.getItem('user'))?._id;
 
-  // When deliveryType changes, store it in localStorage
-  useEffect(() => {
-    localStorage.setItem('orderType', deliveryType);
-  }, [deliveryType]);
-
-  // Fetch user contact info if the delivery type is delivery
+ // When deliveryType changes, store it in localStorage
+ useEffect(() => {
+  localStorage.setItem('orderType', deliveryType);
+}, [deliveryType]);
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/user/${userId}/default-contact`);
-        console.log('Default Contact:', response.data);
         const defaultContact = response.data;
         if (defaultContact) {
           setContactInfo({
             phone: defaultContact.phone,
             address: defaultContact.address,
           });
-          setPhoneNumber(defaultContact.phone); // Initialize phoneNumber with the fetched phone
+          setPhoneNumber(defaultContact.phone);
         }
       } catch (error) {
         console.error('Error fetching contact info:', error.message);
+      } finally {
+        setLoading(false); // Stop loading once data is fetched
       }
     };
 
@@ -44,13 +43,12 @@ const CheckoutPage = () => {
       fetchContactInfo();
     }
 
-    // For pickup, check if phone is missing and set phone required flag
     if (deliveryType === 'pickup' && !contactInfo.phone) {
       setIsPhoneRequired(true);
     } else {
       setIsPhoneRequired(false);
     }
-  }, [deliveryType, userId, contactInfo.phone]);
+  }, [deliveryType, userId]);
 
   const updateDefaultPhone = async (userId, phone) => {
     try {
@@ -64,10 +62,31 @@ const CheckoutPage = () => {
   };
 
   const handleOrderConfirmation = async () => {
+    // Prevent submission if the contact info is still loading
+    if (loading) {
+      alert('Please wait, loading contact info...');
+      return;
+    }
+
     try {
-      if (isPhoneRequired && !phoneNumber) {
-        alert('Please provide a phone number for pickup.');
+      console.log('Confirming order...', deliveryType, phoneNumber, contactInfo, scheduledTime, instructions);
+
+      // Pickup validation
+      if (deliveryType === 'pickup' && (!phoneNumber || phoneNumber.trim() === '')) {
+        alert('Please provide a phone number for pickup for contact information.');
         return;
+      }
+
+      // Delivery validation
+      if (deliveryType === 'delivery') {
+        if (!contactInfo.phone || contactInfo.phone.trim() === '') {
+          alert('Please provide add contact information for delivery.');
+          return;
+        }
+        if (!contactInfo.address || contactInfo.address.trim() === '') {
+          alert('Please provide a delivery address.');
+          return;
+        }
       }
 
       // If phone is updated for pickup, save it
@@ -75,11 +94,14 @@ const CheckoutPage = () => {
         updateDefaultPhone(userId, phoneNumber);
       }
 
+      // Convert the scheduled time to local time zone
+      const localTime = scheduledTime ? new Date(scheduledTime).toLocaleString() : null;
+
       const payload = {
         userId,
         deliveryType,
         contactInfo: deliveryType === 'delivery' ? contactInfo : { phone: phoneNumber, address: contactInfo.address },
-        scheduledTime: scheduledTime || null,
+        scheduledTime: localTime,
         instructions,
       };
 
@@ -100,22 +122,21 @@ const CheckoutPage = () => {
     setIsPhoneEditable(false);
     setPhoneNumber(contactInfo.phone); // Reset to current phone number
   };
- 
-  
+
   const handleSavePhone = async () => {
     if (!phoneNumber) {
-      alert("Phone number cannot be empty!");
+      alert('Phone number cannot be empty!');
       return;
     }
-  
+
     try {
       await updateDefaultPhone(userId, phoneNumber); // Save to backend
       setContactInfo((prev) => ({ ...prev, phone: phoneNumber })); // Update local state
       setIsPhoneEditable(false); // Exit edit mode
-      alert("Phone number updated successfully!");
+      alert('Phone number updated successfully!');
     } catch (error) {
-      console.error("Error updating phone number:", error.message);
-      alert("Failed to update phone number.");
+      console.error('Error updating phone number:', error.message);
+      alert('Failed to update phone number.');
     }
   };
 
@@ -123,7 +144,6 @@ const CheckoutPage = () => {
     <div className="checkout-container">
       <h1>Checkout</h1>
 
-      {/* Delivery Type Selection */}
       <div className="form-group">
         <label>Delivery Type:</label>
         <div className="radio-group">
@@ -150,39 +170,37 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* Contact Information for Pickup */}
       {deliveryType === 'pickup' && (
-  <div className="form-group">
-    <label>Phone Number (Required for Pickup):</label>
-    {!isPhoneEditable ? (
-      <div>
-        <p>Phone: {phoneNumber || 'Not Provided'}</p>
-        <button className="edit-phone-btn" onClick={handleEditContact}>
-          Edit Phone
-        </button>
-      </div>
-    ) : (
-      <div>
-        <input
-          type="text"
-          placeholder="Enter your phone number"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-        <div className="button-group">
-          <button className="save-phone-btn" onClick={handleSavePhone}>
-            Save
-          </button>
-          <button className="cancel-edit-btn" onClick={handleCancelEdit}>
-            Cancel
-          </button>
+        <div className="form-group">
+          <label>Phone Number (Required for Pickup):</label>
+          {!isPhoneEditable ? (
+            <div>
+              <p>Phone: {phoneNumber || 'Not Provided'}</p>
+              <button className="edit-phone-btn" onClick={handleEditContact}>
+                Edit Phone
+              </button>
+            </div>
+          ) : (
+            <div>
+              <input
+                type="text"
+                placeholder="Enter your phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+              <div className="button-group">
+                <button className="save-phone-btn" onClick={handleSavePhone}>
+                  Save
+                </button>
+                <button className="cancel-edit-btn" onClick={handleCancelEdit}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-    )}
-  </div>
-)}
+      )}
 
-      {/* Contact Information for Delivery */}
       {deliveryType === 'delivery' && (
         <div className="form-group">
           <label>Contact Information:</label>
@@ -202,7 +220,6 @@ const CheckoutPage = () => {
         </div>
       )}
 
-      {/* Schedule Order */}
       <div className="form-group">
         <label>Schedule Your Order (Optional):</label>
         <input
@@ -212,7 +229,6 @@ const CheckoutPage = () => {
         />
       </div>
 
-      {/* Special Instructions */}
       <div className="form-group">
         <label>Special Instructions:</label>
         <textarea
