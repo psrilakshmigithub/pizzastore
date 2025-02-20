@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Outlet, useNavigate, Link } from 'react-router-dom';
+import { Outlet, useNavigate, Link,useLocation } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
 import { Helmet } from 'react-helmet';
@@ -27,12 +27,21 @@ const Layout = () => {
   const [autocompleteInstance, setAutocompleteInstance] = useState(null);
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const location = useLocation(); 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) setUser(storedUser);
     setDropdownOpen(false);
   }, [setUser]);
+
+  useEffect(() => {
+    // Send page view to Google Analytics every time the location changes
+    if (window.gtag) {
+      window.gtag("event", "page_view", {
+        page_path: location.pathname,
+      });
+    }
+  }, [location]);
 
   // Open modal if no order type is stored.
   useEffect(() => {

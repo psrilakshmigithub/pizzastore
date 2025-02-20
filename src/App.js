@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom"; // Added useLocation
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";  // Added useNavigate
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import Category from "./components/Category";
@@ -30,12 +30,13 @@ const stripePromise = loadStripe("pk_live_51QjvRCBpoKRfd7wJLoHqey6AXZvDmoV2Smpv9
 
 const App = () => {
   const [storeOpen, setStoreOpen] = useState(true);
-  const location = useLocation(); // useLocation hook to detect route changes
 
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
+        
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/store/status`);
+
         console.log("process.env.REACT_APP_API_BASE_URL, response", process.env.REACT_APP_API_BASE_URL, response);
         setStoreOpen(response.data.storeOpen);
       } catch (error) {
@@ -45,15 +46,6 @@ const App = () => {
 
     fetchStoreStatus();
   }, []);
-
-  useEffect(() => {
-    // Send page view to Google Analytics every time the location changes
-    if (window.gtag) {
-      window.gtag("event", "page_view", {
-        page_path: location.pathname,
-      });
-    }
-  }, [location]); // This effect runs whenever the location changes
 
   return (
     <GoogleOAuthProvider clientId="471126766852-ghap4haabnrqjnpb6aq5s7am7b6hiho8.apps.googleusercontent.com">
