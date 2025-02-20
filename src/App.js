@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";  // Added useNavigate
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import Category from "./components/Category";
@@ -34,7 +34,7 @@ const App = () => {
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
-        debugger
+        
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/store/status`);
 
         console.log("process.env.REACT_APP_API_BASE_URL, response", process.env.REACT_APP_API_BASE_URL, response);
@@ -72,6 +72,8 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/my-orders" element={<MyOrders />} />
               <Route path="/managecontacts" element={<ManageContacts />} />
+              {/* Catch-all route to redirect to homepage */}
+              <Route path="*" element={<HomePage storeOpen={storeOpen} />} /> {/* Fallback route */}
             </Route>
           </Routes>
         </Router>
