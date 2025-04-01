@@ -10,6 +10,7 @@
     "@stripe/stripe-js": "^5.5.0",
     "axios": "^1.7.9",
     "client": "file:",
+    "core-js": "^3.37.1",
     "cra-template": "1.2.0",
     "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
@@ -44,12 +45,13 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "last 2 safari versions"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 safari versions"
     ]
   }
 }

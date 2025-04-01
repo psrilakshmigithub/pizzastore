@@ -15,7 +15,10 @@ const PaymentPage = ({ storeOpen }) => {
   const [cartItems, setCartItems] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentOption, setPaymentOption] = useState("online");
+  const [paymentOption, setPaymentOption] = useState("pickup");
+  //uncomment for online payment start
+  // const [paymentOption, setPaymentOption] = useState("online");
+  //end
   const [isWaitingForConfirmation, setIsWaitingForConfirmation] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [deliveryFee, setDeliveryFee] = useState(0);
@@ -34,14 +37,15 @@ const PaymentPage = ({ storeOpen }) => {
         setCartItems(cart.items);
         setDeliveryFee(cart.deliveryFee);
         setDeliveryType(cart.deliveryType);
+//uncomment for online payment start
+        // const paymentIntentResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/payment/create-payment-intent`, {
+        //   amount: cart.totalPrice * 100,
+        //   userId,
+        //   currency: "cad",
+        // });
 
-        const paymentIntentResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/payment/create-payment-intent`, {
-          amount: cart.totalPrice * 100,
-          userId,
-          currency: "cad",
-        });
-
-        setClientSecret(paymentIntentResponse.data.clientSecret);
+        // setClientSecret(paymentIntentResponse.data.clientSecret);
+        //end
       } catch (error) {
         setErrorMessage("⚠️ Failed to fetch cart details. Try again.");
       }
@@ -93,21 +97,21 @@ const PaymentPage = ({ storeOpen }) => {
 
     try {
       let paymentIntentId = null;
+//uncomment for online payment start
+      // if (paymentOption === "online") {
+      //   const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+      //     payment_method: {
+      //       card: elements.getElement(CardElement),
+      //     },
+      //   });
 
-      if (paymentOption === "online") {
-        const paymentResult = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: elements.getElement(CardElement),
-          },
-        });
-
-        if (paymentResult.error) {
-          throw new Error(paymentResult.error.message);
-        } else if (paymentResult.paymentIntent.status === "succeeded") {
-          paymentIntentId = paymentResult.paymentIntent.id;
-        }
-      }
-
+      //   if (paymentResult.error) {
+      //     throw new Error(paymentResult.error.message);
+      //   } else if (paymentResult.paymentIntent.status === "succeeded") {
+      //     paymentIntentId = paymentResult.paymentIntent.id;
+      //   }
+      // }
+/// end
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders/complete-order`, {
         userId,
         paymentIntentId,
@@ -182,10 +186,10 @@ const PaymentPage = ({ storeOpen }) => {
 
       <form onSubmit={handlePayment}>
         <div className="payment-options">
-          <label>
+          {/* <label>
             <input type="radio" value="online" checked={paymentOption === "online"} onChange={() => setPaymentOption("online")} />
             Pay Now Online
-          </label>
+          </label> */}
           <label>
             <input type="radio" value="pickup" checked={paymentOption === "pickup"} onChange={() => setPaymentOption("pickup")} />
             Pay When Pickup or Delivery
